@@ -1,13 +1,11 @@
 package com.example.tinygreen.chinningmaster;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.tinygreen.chinningmaster.Models.Article;
 import com.example.tinygreen.chinningmaster.Retrofit.ApiService;
 
 import org.json.JSONArray;
@@ -32,13 +30,14 @@ public class Retrofit2Activity extends AppCompatActivity {
     /**
      * 레트로핏 설정
      */
-    private Retrofit retrofit = new Retrofit.Builder().baseUrl(ApiService.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create()).build();
+    private Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl(ApiService.BASE_URL)
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build();
     private ApiService apiService = retrofit.create(ApiService.class);
 
-    private static final String LOG = "::Retrofit2Activity::";
-
-    private TextView mTextAticleId;
+    //UI setting
+    private TextView mTextArticleId;
     private TextView mTextTitle;
     private TextView mTextContent;
     private TextView mTextUserId;
@@ -50,7 +49,7 @@ public class Retrofit2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrofit);
 
-        mTextAticleId = findViewById(R.id.textArticleId);
+        mTextArticleId = findViewById(R.id.textArticleId);
         mTextTitle = findViewById(R.id.textTitle);
         mTextContent = findViewById(R.id.textContent);
         mTextUserId = findViewById(R.id.textUserId);
@@ -98,7 +97,7 @@ public class Retrofit2Activity extends AppCompatActivity {
 
                                 JSONObject jsonObject = jsonArrayContent.getJSONObject(0);
 
-                                mTextAticleId.setText(jsonObject.getString("article_id"));
+                                mTextArticleId.setText(jsonObject.getString("article_id"));
                                 mTextTitle.setText(jsonObject.getString("title"));
                                 mTextUserId.setText(jsonObject.getString("user_id"));
                                 mTextContent.setText(jsonObject.getString("content"));

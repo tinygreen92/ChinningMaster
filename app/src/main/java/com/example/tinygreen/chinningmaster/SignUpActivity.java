@@ -25,8 +25,10 @@ public class SignUpActivity extends AppCompatActivity {
     /**
      * 레트로핏 설정
      */
-    private Retrofit retrofit = new Retrofit.Builder().baseUrl(ApiService.BASE_URL)
-                                .addConverterFactory(GsonConverterFactory.create()).build();
+    private Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(ApiService.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
     private ApiService apiService = retrofit.create(ApiService.class);
 
     // UI references.

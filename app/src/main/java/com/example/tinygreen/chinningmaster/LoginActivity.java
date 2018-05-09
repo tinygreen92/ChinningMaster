@@ -107,8 +107,9 @@ public class LoginActivity extends AppCompatActivity {
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), Retrofit2Activity.class);
+                Intent intent = new Intent(getBaseContext(), MainActivity2.class);
                 startActivity(intent);
+                //TODO : 주석 처리 풀고 위의 인텐트 삭제할 것
 
                 //attemptLogin();
 

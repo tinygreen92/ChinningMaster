@@ -19,9 +19,10 @@ public class MainActivity2 extends AppCompatActivity {
     private TextView mUserHelloTv; // [USERNAME]님 환영합니다.
     private TextView mBMIVTv; // BMI 수치 ~~ 입니다.
     //
-    private TextView mUndongTv;
+    private TextView mWorkoutRecordTv;
+    private TextView mRankingTv;
     private TextView mCommunityTv;
-    private TextView mWriteTv;
+
 
 
 
@@ -46,11 +47,11 @@ public class MainActivity2 extends AppCompatActivity {
          * 세팅 페이지 테스트
          */
 
-        mCommunityTv = findViewById(R.id.textView4);
-        mCommunityTv.setOnClickListener(new View.OnClickListener() {
+        mWorkoutRecordTv = findViewById(R.id.textView2);
+        mWorkoutRecordTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), Retrofit2Activity.class);
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
