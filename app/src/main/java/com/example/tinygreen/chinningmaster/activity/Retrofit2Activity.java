@@ -1,12 +1,14 @@
-package com.example.tinygreen.chinningmaster;
+package com.example.tinygreen.chinningmaster.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.tinygreen.chinningmaster.Retrofit.ApiService;
+import com.example.tinygreen.chinningmaster.R;
+import com.example.tinygreen.chinningmaster.retrofit.ApiService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +76,7 @@ public class Retrofit2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //ShowArticle?article_id=1
+                //TODO : 클릭한 게시물 가져오기
                 final String id = "1";
 
                 Call<ResponseBody> showArticle = apiService.showArticle(id);
@@ -81,7 +84,8 @@ public class Retrofit2Activity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful()) {
-                            Log.e("::::::Successful", "썪쎼쓰");
+                            Log.e("::::::Successful", "성공");
+                            Toast.makeText(getApplicationContext(),"불러오기 성공",Toast.LENGTH_SHORT).show();
 
                             String result = null;
                             try {
@@ -113,6 +117,8 @@ public class Retrofit2Activity extends AppCompatActivity {
 
                         } else {
                             Log.e("::::::Error", "에러");
+                            Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
+
 
                         }
 
@@ -121,6 +127,8 @@ public class Retrofit2Activity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Log.e("::::::Failure", t.getMessage());
+                        Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
+
                     }
                 });
 

@@ -1,4 +1,4 @@
-package com.example.tinygreen.chinningmaster;
+package com.example.tinygreen.chinningmaster.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.tinygreen.chinningmaster.R;
 
 /**
  * A login screen that offers login via login_id/password.

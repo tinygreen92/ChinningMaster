@@ -1,4 +1,4 @@
-package com.example.tinygreen.chinningmaster;
+package com.example.tinygreen.chinningmaster.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,11 +8,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.tinygreen.chinningmaster.Models.UserInfo;
-import com.example.tinygreen.chinningmaster.Retrofit.ApiService;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.tinygreen.chinningmaster.R;
+import com.example.tinygreen.chinningmaster.models.UserInfo;
+import com.example.tinygreen.chinningmaster.retrofit.ApiService;
 
 import retrofit2.Call;
 import retrofit2.Callback;

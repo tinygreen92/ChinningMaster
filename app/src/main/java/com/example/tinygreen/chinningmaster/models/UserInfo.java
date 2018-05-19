@@ -1,4 +1,4 @@
-package com.example.tinygreen.chinningmaster.Models;
+package com.example.tinygreen.chinningmaster.models;
 
 /**
  * Created by tinygreen on 2018-05-06.
