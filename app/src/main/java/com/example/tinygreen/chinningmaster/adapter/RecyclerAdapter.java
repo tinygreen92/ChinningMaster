@@ -43,8 +43,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
         //내용물이랑 스크롤
-        holder.mTextContentView.setText(mDataset.get(position).title.toString());
-        holder.mTextAlramView.setText(mDataset.get(position).content.toString());
+        holder.mTextTitleView.setText(mDataset.get(position).title.toString());
+        holder.mTextContentView.setText(mDataset.get(position).content.toString());
     }
 
     @Override
@@ -62,13 +62,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
      */
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView mTextTitleView;
         private TextView mTextContentView;
-        private TextView mTextAlramView;
 
         private ViewHolder(View view) {
             super(view);
-            mTextContentView = view.findViewById(R.id.textTitle);
-            mTextAlramView = view.findViewById(R.id.textContent);
+            mTextTitleView = view.findViewById(R.id.textTitle);
+            mTextContentView = view.findViewById(R.id.textContent);
             //뷰에 리스너 연결
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

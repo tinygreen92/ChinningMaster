@@ -23,51 +23,91 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="35dp"
-                android:text="글 제목"
+                android:layout_marginTop="23dp"
                 android:background="@drawable/background"
+                android:text="글 제목"
+                android:textSize="26dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textContent"
                 android:layout_width="320dp"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="95dp"
+                android:layout_marginTop="104dp"
                 android:background="@drawable/background"
-                android:text="글 내용" />
+                android:text="글 내용"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/textUserId"
                 android:layout_width="77dp"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/textTitle"
-                android:layout_below="@+id/textTitle"
+                android:layout_alignTop="@+id/textArticleId"
                 android:background="@drawable/background"
-                android:text="작성자" />
+                android:text="작성자"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/textArticleId"
                 android:layout_width="77dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/textTitle"
-                android:layout_below="@+id/textTitle"
+                android:layout_marginTop="71dp"
                 android:background="@drawable/background"
-                android:text="ArticleId" />
+                android:text="ArticleId"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/textWorkoutRecord"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="182dp"
+                android:layout_marginTop="261dp"
                 android:background="@drawable/background"
-                android:text="운동 데이터" />
+                android:text="운동 데이터"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/resident_num"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textReply"
+                android:layout_alignStart="@+id/textTitle"
+                android:layout_weight="2"
+                android:gravity="left"
+                android:hint="댓글을 입력해주세요."
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/reButton"
+                android:layout_width="67dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textReply"
+                android:layout_alignEnd="@+id/textTitle"
+                android:layout_marginBottom="0dp"
+                android:text="입력" />
+
+            <TextView
+                android:id="@+id/textReply"
+                android:layout_width="320dp"
+                android:layout_height="68dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="150dp"
+                android:background="@drawable/background"
+                android:text="덧글 내용"
+                android:textSize="18dp" />
+
+            <Button
+                android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

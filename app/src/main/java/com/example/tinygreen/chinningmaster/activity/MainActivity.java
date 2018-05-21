@@ -1,12 +1,14 @@
 package com.example.tinygreen.chinningmaster.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,11 +25,33 @@ import android.widget.Toast;
 import com.example.tinygreen.chinningmaster.R;
 import com.example.tinygreen.chinningmaster.adapter.RecyclerAdapter;
 import com.example.tinygreen.chinningmaster.models.Article;
+import com.example.tinygreen.chinningmaster.retrofit.ApiService;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    /**
+     * 레트로핏 설정
+     */
+    private Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(ApiService.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+    private ApiService apiService = retrofit.create(ApiService.class);
 
     //TODO : 리싸이클러뷰
     private RecyclerView mRecyclerView;
@@ -45,15 +69,16 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("정보공유");
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -83,10 +108,16 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new RecyclerAdapter(myDataset, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        //임시 데이터 10개
-        for(int i = 1; i<11; i++){
-            addListItem(i);
-        }
+        /**
+         * 데이터 뿌리기
+         */
+
+        addListItem2();
+
+//        //임시 데이터 10개
+//        for(int i = 1; i<11; i++){
+//            addListItem(i);
+//        }
 
         /**
          * 리싸이클러뷰 아이템 클릭시
@@ -113,9 +144,11 @@ public class MainActivity extends AppCompatActivity
                     //yes/no
                     Toast.makeText(getApplicationContext(),position + " 번째 클릭",Toast.LENGTH_SHORT).show();
 
-                }
+                    Intent intent = new Intent(getBaseContext(), Retrofit2Activity.class);
+                    intent.putExtra("position",position);
+                    startActivity(intent);
 
-                /// 요부분에 구현 코드 넣어라.
+                }
 
                 return false;
             }
@@ -210,6 +243,113 @@ public class MainActivity extends AppCompatActivity
         workout_record="운동기록";
 
         myDataset.add(new Article(article_id, user_id, title, content, workout_record));
+        //새로고침
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * JSON 긁어오기
+     */
+    private void addListItem3(){
+
+        String id = "1";
+
+        //
+        Call<ResponseBody> getAllArticle = apiService.getAllArticle(id);
+        getAllArticle.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.e("::::::Successful", "성공");
+                    Toast.makeText(getApplicationContext(),"불러오기 성공",Toast.LENGTH_SHORT).show();
+
+                    try {
+                        String result = response.body().string();
+                        JSONArray jsonArray = new JSONArray(result);
+                        //
+                        String article_id;
+                        String user_id;
+                        String title;
+                        String content;
+                        String workout_record;
+                        //
+                        for(int i=0 ; i<jsonArray.length() ; i++ ){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                            article_id = jsonObject.getString("article_id");
+                            user_id = jsonObject.getString("user_id");
+                            title = jsonObject.getString("title");
+                            content = jsonObject.getString("content");
+                            workout_record = jsonObject.getString("workout_record");
+
+                            //카드뷰 추가
+                            myDataset.add(new Article(article_id, user_id, title, content, workout_record));
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                } else {
+                    Log.e("::::::Error", "에러");
+                    Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("::::::Failure", t.getMessage());
+                Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        //새로고침
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void addListItem2(){
+
+        String result;
+        result = "[{\"title\":\"턱걸이 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"오늘 치킨 ㄱㄱ??\",\"content\":\"운동한만큼 먹어야 될듯 ㅋㅋ\"},{\"title\":\"님들 저 애국가 다 외움\",\"content\":\"동해 물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 남산 위에 저 소나무 철갑을 두른 듯 바람서리 불변함은 우리 기상일세 가을 하늘 공활한데 높고 구름 없이 밝은 달은 우리 가슴 일편단심일세 이 기상과 이 맘으로 충성을 다하여 괴로우나 즐거우나 나라 사랑하세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세\"},{\"title\":\"절대 광고 아니에요 들어오세요\",\"content\":\"♚♚히어로즈 오브 더 스☆톰♚♚가입시$$전원 카드팩☜☜뒷면100%증정※ ♜월드오브 워크래프트♜펫 무료증정￥ 특정조건 §§디아블로3§§★공허의유산★초상화♜오버워치♜겐지스킨￥획득기회@@@ 즉시이동http://kr.battle.net/heroes/ko/\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"}]";
+
+        try {
+            JSONArray jsonArray = new JSONArray(result);
+            //
+            String article_id;
+            String user_id;
+            String title;
+            String content;
+            String workout_record;
+            //
+            for(int i=0 ; i<jsonArray.length() ; i++ ) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                article_id = "article_id";
+                user_id = "user_id";
+                title = jsonObject.getString("title");
+                content = jsonObject.getString("content");
+                workout_record = "workout_record";
+
+                Log.e("::::::::", jsonArray.getJSONObject(i).toString());
+
+                //데이터셋 추가
+                myDataset.add(new Article(article_id, user_id, title, content, workout_record));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
         //새로고침
         mAdapter.notifyDataSetChanged();
     }

@@ -7,10 +7,10 @@
     <string name="action_sign_in">로그인</string>
     <string name="action_exit">종료</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">제품코드가 올바르지 않습니다.</string>
+    <string name="error_invalid_email">아이디가 올바르지 않습니다.</string>
     <string name="error_invalid_password">패스워드가 너무 짧습니다.</string>
     <string name="error_incorrect_password">패스워드가 올바르지 않습니다.</string>
-    <string name="error_field_required">제품코드를 입력해주세요.</string>
+    <string name="error_field_required">아이디를 입력해주세요.</string>
     <!-- 로그인 부분 String -->
 
 
