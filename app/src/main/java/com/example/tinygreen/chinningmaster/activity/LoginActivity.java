@@ -109,11 +109,11 @@ public class LoginActivity extends AppCompatActivity {
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainActivity2.class);
-                //startActivity(intent);
-                //TODO : 주석 처리 풀고 위의 인텐트 삭제할 것
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
 
-                attemptLogin();
+                //TODO : 주석 처리 풀고 위의 인텐트 삭제할 것
+                //attemptLogin();
 
             }
         });
@@ -301,7 +301,7 @@ public class LoginActivity extends AppCompatActivity {
                 // TODO : 로그인 성공시 동작.
                 String intentUserId = mIdView.getText().toString();
 
-                Intent intent = new Intent(getBaseContext(), MainActivity2.class);
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 intent.putExtra("USERNAME",intentUserId);
                 startActivity(intent);
                 //finish();

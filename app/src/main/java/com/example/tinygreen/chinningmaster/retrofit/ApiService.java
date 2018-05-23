@@ -21,9 +21,9 @@ public interface ApiService {
 
     //ShowArticle?article_id=1
     @GET("ShowArticle")
-    Call<ResponseBody> showArticle(@Query("article_id") String id);
+    Call<ResponseBody> showArticle(@Query("article_id") int id);
 
     @GET("GetAllArticle")
-    Call<ResponseBody> getAllArticle(@Query("article_id") String id);
+    Call<ResponseBody> getAllArticle();
 
 }
