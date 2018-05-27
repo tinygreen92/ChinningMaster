@@ -1,11 +1,15 @@
 package com.example.tinygreen.chinningmaster.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +19,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tinygreen.chinningmaster.R;
@@ -54,6 +61,10 @@ public class CommunityActivity extends AppCompatActivity {
     private static ArrayList<Article> myDataset;
     private Context ctx=this;
 
+    //검색창 토글
+    private boolean serachToggle = true;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +74,22 @@ public class CommunityActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("정보 공유");
         //뒤로가기 버튼 추가
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //검색창 초기화
+        TextInputLayout textInputLayout = findViewById(R.id.serachInputLayout);
+        textInputLayout.setVisibility(View.GONE);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        /**
+         * 플로팅 버튼 클릭 리스너
+         */
+        final FloatingActionButton fab = findViewById(R.id.fab);
         fab.hide();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                mRecyclerView.getLayoutManager().smoothScrollToPosition(mRecyclerView,null,0);
+                fab.hide();
             }
         });
 
@@ -185,9 +204,17 @@ public class CommunityActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //TODO : 옵션메뉴 뭘루 할꺼임?
+            // TODO : 글쓰기로 바꿔라
+
             return true;
-        } else if(id == android.R.id.home){
+
+        }else if(id == R.id.action_search){
+            //검색 에딧 뷰
+            // TODO : 다이얼로그 vs 반응형 검색바
+            //showSearchDialog();
+            showSerachEditText();
+            return true;
+        }else if(id == android.R.id.home){
             onBackPressed();
             return true;
         }
@@ -305,6 +332,57 @@ public class CommunityActivity extends AppCompatActivity {
 
         //새로고침
         mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 검색 다이얼로그
+     */
+    private void showSearchDialog(){
+        AlertDialog.Builder alerDialog = new AlertDialog.Builder(CommunityActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_serach,null);
+        alerDialog.setView(view);
+        //
+        final EditText editText = view.findViewById(R.id.edittextSerach);
+        //
+        //alerDialog.setTitle("검색");
+
+        final AlertDialog dialog = alerDialog.create();
+
+        // 확인 버튼 설정
+        alerDialog.setPositiveButton("검색", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.v(":::::", editText.getText().toString());
+                dialog.dismiss();
+            }
+        });
+        // 확인 버튼 설정
+        alerDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.v(":::::", "Yes Btn Click");
+                dialog.dismiss();
+            }
+        });
+
+        alerDialog.show();
+    }
+
+    /**
+     * 검색 버튼 누르면 껏다 켰다
+     */
+    private void showSerachEditText(){
+        TextInputLayout textInputLayout = findViewById(R.id.serachInputLayout);
+        // TODO : 애니메이션 해결
+        if(serachToggle){
+            textInputLayout.setVisibility(View.VISIBLE);
+            serachToggle =!serachToggle;
+        }else{
+            textInputLayout.setVisibility(View.GONE);
+            serachToggle =!serachToggle;
+        }
+
+
     }
 
 }
