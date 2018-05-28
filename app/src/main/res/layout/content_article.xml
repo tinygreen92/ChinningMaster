@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.ArticleActivity"
+    tools:showIn="@layout/activity_article">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:text="글 제목"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="300dp"
+                android:layout_gravity="center"
+                android:layout_height="2dp"
+                android:layout_below="@+id/textTitle"
+                android:layout_centerInParent="true"
+                android:background="#4fa5d5" />
+
+            <TextView
+                android:id="@+id/textUserId"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="작성자"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/textArticleId"
+                android:layout_width="97dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="글번호"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/textContent"
+                android:layout_width="320dp"
+                android:layout_height="1500dp"
+                android:padding="10dp"
+                android:text="글 내용"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/textWorkoutRecord"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="운동 데이터"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/resident_num"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:hint="댓글을 입력해주세요."
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:singleLine="true" />
+                    <Button
+                        android:id="@+id/reButton"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/textReply"
+                        android:layout_alignEnd="@+id/textTitle"
+                        android:text="입력" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textReply"
+                android:layout_width="320dp"
+                android:layout_height="80dp"
+                android:layout_marginBottom="28dp"
+                android:padding="10dp"
+                android:text="덧글 내용"
+                android:textSize="18dp" />
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="18dp"
+                android:text="목록으로" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</ScrollView>

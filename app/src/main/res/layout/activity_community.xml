@@ -20,13 +20,19 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/serachInputLayout">
+            android:id="@+id/searchInputLayout">
+
+            <Spinner
+                android:id="@+id/searchSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/searchType"/>
 
             <EditText
-                android:id="@+id/articleSerach"
+                android:id="@+id/articleSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -36,7 +42,7 @@
                 android:drawableStart="@android:drawable/ic_menu_search"
                 android:drawableLeft="@android:drawable/ic_menu_search"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
 

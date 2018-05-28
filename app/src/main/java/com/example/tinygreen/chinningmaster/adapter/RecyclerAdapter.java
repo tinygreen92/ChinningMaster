@@ -45,6 +45,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //내용물이랑 스크롤
         holder.mTextTitleView.setText(mDataset.get(position).title.toString());
         holder.mTextContentView.setText(mDataset.get(position).content.toString());
+        holder.mTextArticleIdView.setText(mDataset.get(position).article_id.toString());
+        holder.mTextTimeView.setText(mDataset.get(position).time.toString());
     }
 
     @Override
@@ -64,11 +66,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         private TextView mTextTitleView;
         private TextView mTextContentView;
+        private TextView mTextArticleIdView;
+        private TextView mTextTimeView;
+        /**
+         * TODO : 리플 갯수 얻어오기
+         */
+        private TextView mTextReplyCntView;
 
         private ViewHolder(View view) {
             super(view);
             mTextTitleView = view.findViewById(R.id.textTitle);
             mTextContentView = view.findViewById(R.id.textContent);
+            mTextArticleIdView = view.findViewById(R.id.textArticleId);
+            mTextTimeView = view.findViewById(R.id.textTime);
+            mTextReplyCntView = view.findViewById(R.id.textReplyCnt);
             //뷰에 리스너 연결
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

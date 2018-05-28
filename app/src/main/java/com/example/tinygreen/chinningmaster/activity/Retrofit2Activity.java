@@ -54,7 +54,7 @@ public class Retrofit2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_retrofit);
+        setContentView(R.layout.content_article);
 
         mTextArticleId = findViewById(R.id.textArticleId);
         mTextTitle = findViewById(R.id.textTitle);
@@ -133,9 +133,6 @@ public class Retrofit2Activity extends AppCompatActivity {
         mTextContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
             }
         });
 

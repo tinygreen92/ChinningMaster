@@ -6,22 +6,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tinygreen.chinningmaster.R;
@@ -34,7 +34,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -59,10 +61,14 @@ public class CommunityActivity extends AppCompatActivity {
     private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static ArrayList<Article> myDataset;
-    private Context ctx=this;
 
-    //검색창 토글
-    private boolean serachToggle = true;
+    //검색창 관련
+    private Spinner mSpinner;
+    private LinearLayout mTextInputLayout;
+    private EditText mEditText;
+    private static ArrayList<Article> searchDataset;
+    private boolean mSearchToggle = true;
+    private String spinnerPosition;
 
 
     @Override
@@ -75,7 +81,7 @@ public class CommunityActivity extends AppCompatActivity {
         //뒤로가기 버튼 추가
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //검색창 초기화
-        TextInputLayout textInputLayout = findViewById(R.id.serachInputLayout);
+        LinearLayout textInputLayout = findViewById(R.id.searchInputLayout);
         textInputLayout.setVisibility(View.GONE);
 
         /**
@@ -114,8 +120,10 @@ public class CommunityActivity extends AppCompatActivity {
 
         /**
          * 데이터 뿌리기
+         * TODO : 서버 켤때 바꿔라
          */
 
+        //addListItem();
         addListItem2();
 
 
@@ -162,7 +170,7 @@ public class CommunityActivity extends AppCompatActivity {
                     //yes/no
                     Toast.makeText(getApplicationContext(),position + " 번째 클릭",Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getBaseContext(), Retrofit2Activity.class);
+                    Intent intent = new Intent(getBaseContext(), ArticleActivity.class);
                     intent.putExtra("position",position);
                     startActivity(intent);
 
@@ -181,6 +189,51 @@ public class CommunityActivity extends AppCompatActivity {
 
             }
         });
+
+        /**
+         * 검색 기능 한글자 타이핑마다 갱신
+         */
+        mEditText = findViewById(R.id.articleSearch);
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //검색어 입력 후 동작
+                String inputText = mEditText.getText().toString();
+                search(inputText);
+
+            }
+        });
+        /**
+         * 스피너 셀렉트리스너 구현
+         */
+        mSpinner = findViewById(R.id.searchSpinner);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //valuse/array.xml 참조
+                spinnerPosition = parent.getItemAtPosition(position).toString();
+                //스피너 아이템 클릭할 때도 검색 갱신해야하니까
+                String inputText = mEditText.getText().toString();
+                search(inputText);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     @Override
@@ -195,6 +248,9 @@ public class CommunityActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * 오른쪽 옵션 메뉴 클릭시 동작
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -212,7 +268,7 @@ public class CommunityActivity extends AppCompatActivity {
             //검색 에딧 뷰
             // TODO : 다이얼로그 vs 반응형 검색바
             //showSearchDialog();
-            showSerachEditText();
+            showSearchEditText();
             return true;
         }else if(id == android.R.id.home){
             onBackPressed();
@@ -248,6 +304,7 @@ public class CommunityActivity extends AppCompatActivity {
                         String title;
                         String content;
                         String workout_record;
+                        String time;
                         //
                         for(int i=0 ; i<jsonArray.length() ; i++ ){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -257,12 +314,15 @@ public class CommunityActivity extends AppCompatActivity {
                             title = jsonObject.getString("title");
                             content = jsonObject.getString("content");
                             workout_record = jsonObject.getString("workout_record");
+                            time = jsonObject.getString("time");
 
                             Log.e("::::::::", jsonArray.getJSONObject(i).toString());
 
                             //카드뷰 추가
-                            myDataset.add(new Article(article_id, user_id, title, content, workout_record));
-
+                            myDataset.add(new Article(article_id, user_id, title, content, workout_record, time));
+                            //검색을 위한 데이터 복붙
+                            searchDataset = new ArrayList<>();
+                            searchDataset.addAll(myDataset);
                             //새로고침
                             mAdapter.notifyDataSetChanged();
                         }
@@ -295,7 +355,7 @@ public class CommunityActivity extends AppCompatActivity {
 
 
     }
-
+    //TODO : TEST UNIT : 서버연결할때 삭제할 것
     private void addListItem2(){
 
         String result;
@@ -309,20 +369,23 @@ public class CommunityActivity extends AppCompatActivity {
             String title;
             String content;
             String workout_record;
+            String time;
             //
             for(int i=0 ; i<jsonArray.length() ; i++ ) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                article_id = "article_id";
-                user_id = "user_id";
+                article_id = String.valueOf(jsonArray.length()-i) ;
+                user_id = "작성자";
                 title = jsonObject.getString("title");
                 content = jsonObject.getString("content");
                 workout_record = "workout_record";
-
-                Log.e("::::::::", jsonArray.getJSONObject(i).toString());
+                time = getTime();
 
                 //데이터셋 추가
-                myDataset.add(new Article(article_id, user_id, title, content, workout_record));
+                myDataset.add(new Article(article_id, user_id, title, content, workout_record, time));
+                //검색을 위한 데이터 복붙
+                searchDataset = new ArrayList<>();
+                searchDataset.addAll(myDataset);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -335,14 +398,15 @@ public class CommunityActivity extends AppCompatActivity {
     }
 
     /**
+     * TODO : AlertDialog 사용하는 건데 사용안하고 보류
      * 검색 다이얼로그
      */
     private void showSearchDialog(){
         AlertDialog.Builder alerDialog = new AlertDialog.Builder(CommunityActivity.this);
-        View view = getLayoutInflater().inflate(R.layout.dialog_serach,null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_search,null);
         alerDialog.setView(view);
         //
-        final EditText editText = view.findViewById(R.id.edittextSerach);
+        final EditText editText = view.findViewById(R.id.edittextSearch);
         //
         //alerDialog.setTitle("검색");
 
@@ -356,11 +420,11 @@ public class CommunityActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        // 확인 버튼 설정
+        // 취소 버튼 설정
         alerDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.v(":::::", "Yes Btn Click");
+                Log.v(":::::", "cancel Btn Click");
                 dialog.dismiss();
             }
         });
@@ -371,18 +435,83 @@ public class CommunityActivity extends AppCompatActivity {
     /**
      * 검색 버튼 누르면 껏다 켰다
      */
-    private void showSerachEditText(){
-        TextInputLayout textInputLayout = findViewById(R.id.serachInputLayout);
+    private void showSearchEditText(){
+        mTextInputLayout = findViewById(R.id.searchInputLayout);
         // TODO : 애니메이션 해결
-        if(serachToggle){
-            textInputLayout.setVisibility(View.VISIBLE);
-            serachToggle =!serachToggle;
+        if(mSearchToggle){
+            mTextInputLayout.setVisibility(View.VISIBLE);
+            mSearchToggle =!mSearchToggle;
         }else{
-            textInputLayout.setVisibility(View.GONE);
-            serachToggle =!serachToggle;
+            mTextInputLayout.setVisibility(View.GONE);
+            mSearchToggle =!mSearchToggle;
         }
 
 
     }
+
+    private void search(String text){
+        //본문 내용 초기화
+        myDataset.clear();
+        //입력 없으면 모든 내용 출력
+        if(text.length() == 0){
+            myDataset.addAll(searchDataset);
+        }else{
+            //본래 리스트 몽땅 검색
+            for(int i =0; i< searchDataset.size(); i++){
+                // TODO : case 문 돌려
+                switch (spinnerPosition){
+                    default:
+                        //제목 + 내용 검색
+                        if(searchDataset.get(i).title.toLowerCase().contains(text) || searchDataset.get(i).content.toLowerCase().contains(text)){
+                            myDataset.add(searchDataset.get(i));
+                        }
+                        break;
+
+                    case "제목 + 내용":
+                        //제목 + 내용 검색
+                        if(searchDataset.get(i).title.toLowerCase().contains(text) || searchDataset.get(i).content.toLowerCase().contains(text)){
+                            myDataset.add(searchDataset.get(i));
+                        }
+                        break;
+                    case "제목":
+                        //제목 검색
+                        if(searchDataset.get(i).title.toLowerCase().contains(text)){
+                            //본문 + 내용
+                            myDataset.add(searchDataset.get(i));
+                        }
+                        break;
+                    case "내용":
+                        //내용 검색
+                        if(searchDataset.get(i).content.toLowerCase().contains(text)){
+                            //본문 + 내용
+                            myDataset.add(searchDataset.get(i));
+                        }
+                        break;
+                    case "작성자":
+                        //작성 검색
+                        if(searchDataset.get(i).user_id.toLowerCase().contains(text)){
+                            //본문 + 내용
+                            myDataset.add(searchDataset.get(i));
+                        }
+                        break;
+                }
+
+            }
+        }
+        //어댑터 갱신
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 시간 연월일만 가져와
+     */
+    private String getTime(){
+        Long mNow = System.currentTimeMillis();
+        Date mDate = new Date(mNow);
+        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        return mFormat.format(mDate);
+    }
+
 
 }

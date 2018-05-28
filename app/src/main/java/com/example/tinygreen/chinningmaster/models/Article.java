@@ -14,14 +14,15 @@ public class Article {
     public String content;
     public String workout_record;
     //TODO : time은 GET 할때만 필요한가?
-    //public String time;
+    public String time;
 
 
-    public Article(String article_id, String user_id, String title, String content, String workout_record) {
+    public Article(String article_id, String user_id, String title, String content, String workout_record, String time) {
         this.article_id = article_id;
         this.user_id = user_id;
         this.title = title;
         this.content = content;
         this.workout_record = workout_record;
+        this.time = time;
     }
 }

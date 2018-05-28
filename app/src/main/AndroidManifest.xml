@@ -36,7 +36,11 @@
         <activity
             android:name=".activity.CommunityActivity"
             android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.ArticleActivity"
+            android:label="@string/title_activity_article"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

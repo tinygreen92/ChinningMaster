@@ -23,6 +23,7 @@
             android:layout_weight="6">
 
             <TextView
+                android:id="@+id/textArticleId"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -73,16 +74,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="닉네임" />
+                android:id="@+id/textUserId"
+                android:text="작성자" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/textTime"
                 android:text="2018/05/22" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/textReplyCnt"
                 android:text="댓글 0" />
 
 
