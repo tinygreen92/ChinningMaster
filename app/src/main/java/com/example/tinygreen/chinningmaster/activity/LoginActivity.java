@@ -88,10 +88,10 @@ public class LoginActivity extends AppCompatActivity {
         /**
          * 아이디 패스워드 id password
          */
-        mIdView = findViewById(R.id.login_id);
+        mIdView = findViewById(R.id.editLogin_id);
         //populateAutoComplete();
 
-        mPasswordView = findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.editPassword);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -109,7 +109,10 @@ public class LoginActivity extends AppCompatActivity {
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                //더미
+                String intentUserId = "치닝마스터";
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                intent.putExtra("USERNAME",intentUserId);
                 startActivity(intent);
 
                 //TODO : 주석 처리 풀고 위의 인텐트 삭제할 것
@@ -124,7 +127,10 @@ public class LoginActivity extends AppCompatActivity {
         mExitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(getBaseContext(), WriteArticleActivity.class);
+                startActivity(intent);
+
+                //finish();
             }
         });
         /**
@@ -134,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
         mRegisterBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), SignUpActivity.class);
+                Intent intent = new Intent(getBaseContext(), SignInActivity.class);
                 startActivity(intent);
             }
         });
@@ -269,17 +275,19 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service. 여따가 JSON 가져오는거.
 
             try {
                 // Simulate network access.
-
+                /**
+                 *  TODO: attempt authentication against a network service. 여따가 JSON 가져오는거.
+                 */
                 Thread.sleep(1000);
 
             } catch (InterruptedException e) {
                 return false;
             }
             // 회원정보 대조
+            // TODO : JSON 구축하면 더미 날릴 것
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mLoginId)) {

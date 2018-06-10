@@ -6,28 +6,25 @@
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
         android:gravity="bottom"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:orientation="vertical">
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="2"-->
+            <!--app:srcCompat="@mipmap/ic_launcher_round" />-->
         </LinearLayout>
 
         <LinearLayout
@@ -41,16 +38,17 @@
                 android:id="@+id/user_hello"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="[ID]님 환영합니다!"
-                android:textColor="#000000" />
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/BMI_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
+                android:paddingTop="4dp"
                 android:text="BMI 수치 : 30.6(비만)"
-                android:textColor="#000000" />
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +59,8 @@
             android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/settinImageView"
+            android:id="@+id/settingImageView"
+            android:layout_marginRight="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_settings_black_24dp" />
@@ -73,6 +72,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_my_undong"
+        android:padding="20dp"
         android:orientation="vertical">
 
         <TextView
@@ -80,35 +81,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/bg_my_undong"
+            android:background="@drawable/background"
             android:paddingLeft="18dp"
             android:gravity="center_vertical"
             android:text="나의 운동기록"
-            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
             android:textSize="30dp" />
 
         <TextView
             android:id="@+id/textView3"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#2a43b1"
-            android:paddingRight="18dp"
-            android:gravity="center_vertical|right"
+            android:background="@drawable/background"
+            android:paddingLeft="18dp"
+            android:gravity="center_vertical"
             android:text="전체 사용자 기록 확인"
-            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
             android:textSize="30dp" />
 
         <TextView
             android:id="@+id/textView4"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#892ab1"
+            android:background="@drawable/background"
             android:paddingLeft="18dp"
             android:gravity="center_vertical"
             android:text="정보공유"
-            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
             android:textSize="30dp" />
     </LinearLayout>
 

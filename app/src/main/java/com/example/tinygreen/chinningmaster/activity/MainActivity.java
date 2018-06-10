@@ -17,13 +17,15 @@ public class MainActivity extends AppCompatActivity {
      * TODO: 세팅 버튼 추가해야 댐
      */
     private ImageView mImageView; // 프사
-    private Button mSettingBtn; // <- xml 에 추가 필요
+    private ImageView mSettingBtn; // <- xml 에 settingImageView
     private TextView mUserHelloTv; // [USERNAME]님 환영합니다.
     private TextView mBMIVTv; // BMI 수치 ~~ 입니다.
     //
     private TextView mWorkoutRecordTv;
     private TextView mRankingTv;
     private TextView mCommunityTv;
+    //
+    private String USERNAME;
 
 
 
@@ -37,24 +39,38 @@ public class MainActivity extends AppCompatActivity {
          * LoginAct 에서 인텐트 받아오기
          */
         Intent intent = getIntent();
-        String userName = intent.getStringExtra("USERNAME");
+        USERNAME = intent.getStringExtra("USERNAME");
 
-        mImageView = findViewById(R.id.imageView);
+        //mImageView = findViewById(R.id.imageView);
 
         mUserHelloTv = findViewById(R.id.user_hello);
-        mUserHelloTv.setText("["+userName+"]님 환영합니다!");
+        mUserHelloTv.setText("["+USERNAME+"]님 환영합니다!");
 
 
         /**
          * 세팅 페이지 테스트
          */
 
+        mSettingBtn = findViewById(R.id.settingImageView);
+        mSettingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getBaseContext(), SettingActivity.class);
+                intent.putExtra("USERNAME",USERNAME);
+                startActivity(intent);
+            }
+        });
+
+        /**
+         * 나의 운동기록 페이지
+         */
         mWorkoutRecordTv = findViewById(R.id.textView2);
         mWorkoutRecordTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getBaseContext(), CommunityActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getBaseContext(), MyWorkActivity.class);
+                startActivity(intent);
             }
         });
 

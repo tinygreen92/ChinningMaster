@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:background="#e1e1e1"
     tools:context=".activity.CommunityActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -31,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/searchType"/>
 
-            <EditText
+            <com.example.tinygreen.chinningmaster.ClearEditText
                 android:id="@+id/articleSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

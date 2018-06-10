@@ -8,7 +8,7 @@ public class Article {
      * /WriteArticle 게시물 쓰기
      * /Reply 댓글 쓰기
      */
-    public String article_id;
+    public int article_id;
     public String user_id;
     public String title;
     public String content;
@@ -16,8 +16,11 @@ public class Article {
     //TODO : time은 GET 할때만 필요한가?
     public String time;
 
+    public Article() {
+        //생성자
+    }
 
-    public Article(String article_id, String user_id, String title, String content, String workout_record, String time) {
+    public Article(int article_id, String user_id, String title, String content, String workout_record, String time) {
         this.article_id = article_id;
         this.user_id = user_id;
         this.title = title;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,111 +10,190 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
+            android:fillViewport="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textTitle"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:text="글 제목"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="300dp"
-                android:layout_gravity="center"
-                android:layout_height="2dp"
-                android:layout_below="@+id/textTitle"
-                android:layout_centerInParent="true"
-                android:background="#4fa5d5" />
-
-            <TextView
-                android:id="@+id/textUserId"
-                android:layout_width="77dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="작성자"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/textArticleId"
-                android:layout_width="97dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="글번호"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/textContent"
-                android:layout_width="320dp"
-                android:layout_height="1500dp"
-                android:padding="10dp"
-                android:text="글 내용"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/textWorkoutRecord"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="운동 데이터"
-                android:textSize="16dp" />
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/resident_num"
-                        android:layout_width="70dp"
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
+
+                <TextView
+                    android:id="@+id/articleTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="글 제목"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/articleUserId"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="left"
-                        android:hint="댓글을 입력해주세요."
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:padding="10dp"
-                        android:singleLine="true" />
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:text="작성자"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/articleTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingRight="10dp"
+                        android:text="2018/05/28 20:22:38"
+                        android:textSize="12dp" />
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/textArticleId"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:padding="10dp"-->
+                    <!--android:text="글 번호"-->
+                    <!--android:textSize="12dp" />-->
+
+                </FrameLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
+
+                <TextView
+                android:id="@+id/articleContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginBottom="100dp"
+                android:text="글 내용"
+                android:textSize="18dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
+
+                <TextView
+                    android:id="@+id/articleWorkoutRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="운동 데이터"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
+
+                <LinearLayout
+                    android:id="@+id/myArticleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:gravity="center">
+
                     <Button
-                        android:id="@+id/reButton"
-                        android:layout_width="70dp"
+                        android:id="@+id/backButton"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_above="@+id/textReply"
-                        android:layout_alignEnd="@+id/textTitle"
-                        android:text="입력" />
+                        android:layout_marginRight="20dp"
+                        android:text="수정" />
+
+                    <Button
+                        android:id="@+id/backButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="삭제" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:descendantFocusability="blocksDescendants">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerViewReply"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textReply"
-                android:layout_width="320dp"
-                android:layout_height="80dp"
-                android:layout_marginBottom="28dp"
-                android:padding="10dp"
-                android:text="덧글 내용"
-                android:textSize="18dp" />
-            <Button
-                android:id="@+id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="18dp"
-                android:text="목록으로" />
+        </android.support.v4.widget.NestedScrollView>
 
-        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 댓글 창-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <EditText
+            android:id="@+id/editResident_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="댓글을 입력해주세요."
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/reButton"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textReply"
+            android:layout_alignEnd="@+id/textTitle"
+            android:text="입력" />
 
     </LinearLayout>
 
 
 
-</ScrollView>
+</android.support.constraint.ConstraintLayout>

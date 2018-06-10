@@ -60,18 +60,45 @@ public class Retrofit2Activity extends AppCompatActivity {
         mTextTitle = findViewById(R.id.textTitle);
         mTextContent = findViewById(R.id.textContent);
         mTextUserId = findViewById(R.id.textUserId);
-        mTextWorkoutRecord = findViewById(R.id.textWorkoutRecord);
+        //mTextWorkoutRecord = findViewById(R.id.textWorkoutRecord);
         //
         mTextReply = findViewById(R.id.textReply);
-        mBackButton = findViewById(R.id.backButton);
+        //mBackButton = findViewById(R.id.backButton);
 
         //
         Intent intent = getIntent();
+        final int articleId = intent.getIntExtra("position",0);
+        /**
+         * JSON 뿌려주기
+         */
+        addItem(articleId);
 
-        final int position = intent.getIntExtra("position",0);
+        /**
+         * 본문 클릭리스너
+         */
+        mTextContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
 
-        int articleId = position;
+        /**
+         * 뒤로가기 동작
+         */
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
+
+    }
+
+    /**
+     * 서버 연결 안될때 사용하는 리스트 뿌리기
+     */
+    private void addItem(int articleId){
         Call<ResponseBody> showArticle = apiService.showArticle(articleId);
         showArticle.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -129,22 +156,6 @@ public class Retrofit2Activity extends AppCompatActivity {
 
             }
         });
-
-        mTextContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
-        //back 버튼
-        mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-
     }
 
 

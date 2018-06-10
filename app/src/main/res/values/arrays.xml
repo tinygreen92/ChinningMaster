@@ -6,4 +6,10 @@
         <item >내용</item>
         <item >작성자</item>
     </string-array>
+    <string-array name="workoutType">
+        <item >---공개할 운동기록을 선택해주세요---</item>
+        <item >2018년4월16일 10개 70% 10분</item>
+        <item >2018년4월26일 15개 80% 17분</item>
+        <item >2018년5월6일 20개 90% 15분</item>
+    </string-array>
 </resources>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".activity.SignUpActivity">
+    tools:context=".activity.EditUserInfoActivity">
 
 
 
@@ -47,7 +47,7 @@
                     android:layout_height="match_parent">
 
                     <AutoCompleteTextView
-                        android:id="@+id/login_id"
+                        android:id="@+id/editLogin_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_person_black_24dp"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/password"
+                        android:id="@+id/editPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_lock_black_24dp"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/password_confirm"
+                        android:id="@+id/editPassword_confirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_lock_black_24dp"
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/kinect_num"
+                        android:id="@+id/editKinect_num"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_tablet_android_black_24dp"
@@ -144,41 +144,41 @@
                         android:layout_weight="3"
                         android:text="" />
 
-                        <EditText
-                            android:id="@+id/resident_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint="주민번호 앞 6자리"
-                            android:gravity="center_horizontal"
-                            android:inputType="number"
-                            android:maxLength="6"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:imeOptions="actionNext"
-                            android:layout_weight="2"/>
+                    <EditText
+                        android:id="@+id/editResident_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="주민번호 앞 6자리"
+                        android:gravity="center_horizontal"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:layout_weight="2"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:text="-"
-                            android:textSize="28dp"
-                            android:textColor="#000000"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="-"
+                        android:textSize="28dp"
+                        android:textColor="#000000"/>
 
 
-                        <EditText
-                            android:id="@+id/resident_num_tail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint="*"
-                            android:gravity="center_horizontal"
-                            android:inputType="number"
-                            android:maxLength="1"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:imeOptions="actionNext"
-                            android:layout_weight="1"/>
+                    <EditText
+                        android:id="@+id/editResident_num_tail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="*"
+                        android:gravity="center_horizontal"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:layout_weight="1"/>
 
 
 
@@ -262,9 +262,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <Button
-                        android:id="@+id/sign_in_button"
+                        android:id="@+id/sign_back_button"
                         style="?android:textAppearanceSmall"
                         android:layout_width="180dp"
                         android:layout_height="50dp"
@@ -272,12 +271,12 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/custom_button"
-                        android:text="회원가입"
+                        android:text="뒤로가기"
                         android:textColor="#FFFFFF"
                         android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/sign_back_button"
+                        android:id="@+id/sign_in_button"
                         style="?android:textAppearanceSmall"
                         android:layout_width="180dp"
                         android:layout_height="50dp"
@@ -285,9 +284,11 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/custom_button"
-                        android:text="뒤로가기"
+                        android:text="정보수정"
                         android:textColor="#FFFFFF"
                         android:textStyle="bold" />
+
+
 
                 </LinearLayout>
 

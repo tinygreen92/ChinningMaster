@@ -14,24 +14,24 @@ import com.example.tinygreen.chinningmaster.models.Article;
 import java.util.ArrayList;
 
 /**
- * Created by tinygreen on 2018-05-13.
+ * Created by tinygreen on 2018-05-28.
  */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements OnListItemClickListener {
+public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ViewHolder> implements OnListItemClickListener {
 
     private ArrayList<Article> mDataset;
     private OnListItemClickListener mListener;
     private Context mContext;
 
-    public RecyclerAdapter (ArrayList<Article> myDataset, Context context) {
+    public ReplyAdapter(ArrayList<Article> myDataset, Context context) {
         mDataset = myDataset;
         mContext = context;
     }
 
     @NonNull
     @Override
-    public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReplyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //카드 뷰를 붙여준다
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_article, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_reply, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
         //뷰홀더에 클릭리스너 붙이고
@@ -41,12 +41,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReplyAdapter.ViewHolder holder, int position) {
         //내용물이랑 스크롤
-        holder.mTextTitleView.setText(mDataset.get(position).title.toString());
-        holder.mTextContentView.setText(mDataset.get(position).content.toString());
-        holder.mTextArticleIdView.setText(String.valueOf(mDataset.get(position).article_id));
-        holder.mTextTimeView.setText(mDataset.get(position).time.toString());
+        holder.mTextReplyUserId.setText(mDataset.get(position).user_id.toString());
+        holder.mTextReplyContent.setText(mDataset.get(position).content.toString());
+        holder.mTextReplyTime.setText(mDataset.get(position).time.toString());
     }
 
     @Override
@@ -64,22 +63,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
      */
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTextTitleView;
-        private TextView mTextContentView;
-        private TextView mTextArticleIdView;
-        private TextView mTextTimeView;
-        /**
-         * TODO : 리플 갯수 얻어오기
-         */
-        private TextView mTextReplyCntView;
+        private TextView mTextReplyUserId;
+        private TextView mTextReplyContent;
+        private TextView mTextReplyTime;
 
         private ViewHolder(View view) {
             super(view);
-            mTextTitleView = view.findViewById(R.id.textTitle);
-            mTextContentView = view.findViewById(R.id.textContent);
-            mTextArticleIdView = view.findViewById(R.id.textArticleId);
-            mTextTimeView = view.findViewById(R.id.textTime);
-            mTextReplyCntView = view.findViewById(R.id.textReplyCnt);
+            mTextReplyUserId = view.findViewById(R.id.textReplyUserId);
+            mTextReplyContent = view.findViewById(R.id.textReplyContent);
+            mTextReplyTime = view.findViewById(R.id.textReplyTime);
+            //
             //뷰에 리스너 연결
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

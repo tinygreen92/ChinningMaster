@@ -1,7 +1,6 @@
 package com.example.tinygreen.chinningmaster.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,13 +55,17 @@ public class CommunityActivity extends AppCompatActivity {
             .build();
     private ApiService apiService = retrofit.create(ApiService.class);
 
-    //TODO : 리싸이클러뷰
+    /**
+     * 리싸이클러 뷰 설정
+     */
     private RecyclerView mRecyclerView;
     private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static ArrayList<Article> myDataset;
 
-    //검색창 관련
+    /**
+     * 검색창 설정
+     */
     private Spinner mSpinner;
     private LinearLayout mTextInputLayout;
     private EditText mEditText;
@@ -259,15 +262,14 @@ public class CommunityActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_write) {
             // TODO : 글쓰기로 바꿔라
-
+            Intent intent = new Intent(getBaseContext(), WriteArticleActivity.class);
+            startActivity(intent);
             return true;
 
         }else if(id == R.id.action_search){
             //검색 에딧 뷰
-            // TODO : 다이얼로그 vs 반응형 검색바
-            //showSearchDialog();
             showSearchEditText();
             return true;
         }else if(id == android.R.id.home){
@@ -299,7 +301,7 @@ public class CommunityActivity extends AppCompatActivity {
                         JSONArray jsonArray = new JSONArray(result);
 
                         //
-                        String article_id;
+                        int article_id;
                         String user_id;
                         String title;
                         String content;
@@ -309,7 +311,7 @@ public class CommunityActivity extends AppCompatActivity {
                         for(int i=0 ; i<jsonArray.length() ; i++ ){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                            article_id = jsonObject.getString("article_id");
+                            article_id = jsonObject.getInt("article_id");
                             user_id = jsonObject.getString("user_id");
                             title = jsonObject.getString("title");
                             content = jsonObject.getString("content");
@@ -323,9 +325,10 @@ public class CommunityActivity extends AppCompatActivity {
                             //검색을 위한 데이터 복붙
                             searchDataset = new ArrayList<>();
                             searchDataset.addAll(myDataset);
-                            //새로고침
-                            mAdapter.notifyDataSetChanged();
+
                         }
+                        //새로고침
+                        mAdapter.notifyDataSetChanged();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -346,7 +349,8 @@ public class CommunityActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("::::::Failure", t.getMessage());
+                Log.e("::::::Failure", t.toString());
+                //Log.e("::::::Failure", t.getMessage());
                 Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
 
             }
@@ -359,12 +363,12 @@ public class CommunityActivity extends AppCompatActivity {
     private void addListItem2(){
 
         String result;
-        result = "[{\"title\":\"턱걸이 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"오늘 치킨 ㄱㄱ??\",\"content\":\"운동한만큼 먹어야 될듯 ㅋㅋ\"},{\"title\":\"님들 저 애국가 다 외움\",\"content\":\"동해 물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세 남산 위에 저 소나무 철갑을 두른 듯 바람서리 불변함은 우리 기상일세 가을 하늘 공활한데 높고 구름 없이 밝은 달은 우리 가슴 일편단심일세 이 기상과 이 맘으로 충성을 다하여 괴로우나 즐거우나 나라 사랑하세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세\"},{\"title\":\"절대 광고 아니에요 들어오세요\",\"content\":\"♚♚히어로즈 오브 더 스☆톰♚♚가입시$$전원 카드팩☜☜뒷면100%증정※ ♜월드오브 워크래프트♜펫 무료증정￥ 특정조건 §§디아블로3§§★공허의유산★초상화♜오버워치♜겐지스킨￥획득기회@@@ 즉시이동http://kr.battle.net/heroes/ko/\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"},{\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉 10개하기 진짜 힘드네요;;;\",\"content\":\"이제 꾸준하게 운동 해야할듯..ㅠㅠㅠ\"}]";
+        result = "[{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"오늘치킨ㄱㄱ\",\"content\":\"운동한만큼먹어야될듯ㅋㅋ\"},{\"title\":\"님들저애국가다외움\",\"content\":\"동해물과백두산이마르고닳도록하느님이보우하사우리나라만세남산위에저소나무철갑을두른듯바람서리불변함은우리기상일세가을하늘공활한데높고구름없이밝은달은우리가슴일편단심일세이기상과이맘으로충성을다하여괴로우나즐거우나나라사랑하세무궁화삼천리화려강산대한사람대한으로길이보전하세\"},{\"title\":\"절대광고아니에요들어오세요\",\"content\":\"♚♚히어로즈오브더스☆톰♚♚가입시$$전원카드팩☜☜뒷면100%증정※♜월드오브워크래프트♜펫무료증정￥특정조건§§디아블로3§§★공허의유산★초상화♜오버워치♜겐지스킨￥획득기회@@@ 즉시이동http://kr.battle.net/heroes/ko/\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"}]";
 
         try {
             JSONArray jsonArray = new JSONArray(result);
             //
-            String article_id;
+            int article_id;
             String user_id;
             String title;
             String content;
@@ -374,7 +378,7 @@ public class CommunityActivity extends AppCompatActivity {
             for(int i=0 ; i<jsonArray.length() ; i++ ) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                article_id = String.valueOf(jsonArray.length()-i) ;
+                article_id = jsonArray.length()-i;
                 user_id = "작성자";
                 title = jsonObject.getString("title");
                 content = jsonObject.getString("content");

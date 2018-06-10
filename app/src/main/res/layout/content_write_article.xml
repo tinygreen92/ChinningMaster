@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.WriteArticleActivity"
+    tools:showIn="@layout/activity_write_article">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v4.widget.NestedScrollView
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
+
+                <EditText
+                    android:id="@+id/editArticleTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="글 제목"
+                    android:textSize="20dp"
+                    android:singleLine = "true"
+                    android:lines = "1"
+                    android:background="@null"
+                    android:textStyle="bold" />
+
+
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
+
+                <EditText
+                    android:id="@+id/editArticleContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="100dp"
+                    android:padding="10dp"
+                    android:singleLine="false"
+                    android:hint="글 내용"
+                    android:background="@null"
+                    android:textSize="18dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
+
+                <Spinner
+                    android:id="@+id/editArticleWorkoutRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:entries="@array/workoutType"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    android:background="#bfbfbf" />
+
+                <LinearLayout
+                    android:id="@+id/myArticleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center">
+
+                    <!--액티비티에 메소드 정의해서 권한에 따라 show/hide 할것-->
+                    <Button
+                        android:id="@+id/articleCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/custom_button"
+                        android:layout_weight="1"
+                        android:text="취소" />
+
+                    <Button
+                        android:id="@+id/articleSubmit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/custom_button"
+                        android:layout_weight="1"
+                        android:text="등록" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>
