@@ -21,6 +21,10 @@ public interface ApiService {
     @POST("/signin")
     Call<User> newContent(@Body User user);
 
+    //login?user_id=QW4793&user_pw=dusgh4314
+    @GET("/login")
+    Call<ResponseBody> checkLogin(@Query("user_id") String id, @Query("user_pw") String pw);
+
     @POST("/WriteArticle")
     Call<Article> writeArticle(@Body Article article);
 

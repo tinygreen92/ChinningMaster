@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tinygreen.chinningmaster.R;
 
@@ -62,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button mExitButton;
 
     private TextView mRegisterBtn;
+
+    //뒤로가기 두번 눌러 종료 시간
+    private long backKeyPressedTime = 0;
 
     /**
      * onCreate 시작
@@ -157,6 +161,24 @@ public class LoginActivity extends AppCompatActivity {
      * onCreate -end-
      */
 
+    public void onBackPressed() {
+
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(),"한번 더 누르면 앱이 종료됩니다.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            //toast.cancel();
+            //백그라운드로 보내고
+            moveTaskToBack(true);
+            finish();
+            //프로세스 킬
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+
 
 
     /**
@@ -219,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: 패스워드 규칙 멀루 하까
-        return password.length() > 4;
+        return password.length() > 5;
     }
 
     /**
@@ -325,6 +347,7 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
         }
+
     }
 }
 

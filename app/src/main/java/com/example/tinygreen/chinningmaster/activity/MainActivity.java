@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tinygreen.chinningmaster.R;
 
@@ -20,12 +21,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mSettingBtn; // <- xml 에 settingImageView
     private TextView mUserHelloTv; // [USERNAME]님 환영합니다.
     private TextView mBMIVTv; // BMI 수치 ~~ 입니다.
-    //
+    // 메인 버튼
     private TextView mWorkoutRecordTv;
     private TextView mRankingTv;
     private TextView mCommunityTv;
-    //
+    // 인텐트로 넘겨오는 유저 닉네임
     private String USERNAME;
+    //뒤로가기 두번 눌러 종료 시간
+    private long backKeyPressedTime = 0;
 
 
 
@@ -87,4 +90,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(),"한번 더 누르면 앱이 종료됩니다.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            //toast.cancel();
+            //백그라운드로 보내고
+            moveTaskToBack(true);
+            finish();
+            //프로세스 킬
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+
 }

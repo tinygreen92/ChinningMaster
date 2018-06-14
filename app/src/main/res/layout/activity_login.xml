@@ -68,7 +68,7 @@
                     android:id="@+id/editLogin_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
+                    android:hint="@string/prompt_id"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true"

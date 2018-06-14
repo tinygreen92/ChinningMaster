@@ -401,40 +401,40 @@ public class CommunityActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * TODO : AlertDialog 사용하는 건데 사용안하고 보류
-     * 검색 다이얼로그
-     */
-    private void showSearchDialog(){
-        AlertDialog.Builder alerDialog = new AlertDialog.Builder(CommunityActivity.this);
-        View view = getLayoutInflater().inflate(R.layout.dialog_search,null);
-        alerDialog.setView(view);
-        //
-        final EditText editText = view.findViewById(R.id.edittextSearch);
-        //
-        //alerDialog.setTitle("검색");
-
-        final AlertDialog dialog = alerDialog.create();
-
-        // 확인 버튼 설정
-        alerDialog.setPositiveButton("검색", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.v(":::::", editText.getText().toString());
-                dialog.dismiss();
-            }
-        });
-        // 취소 버튼 설정
-        alerDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.v(":::::", "cancel Btn Click");
-                dialog.dismiss();
-            }
-        });
-
-        alerDialog.show();
-    }
+//    /**
+//     * TODO : AlertDialog 사용하는 건데 사용안하고 보류
+//     * 검색 다이얼로그
+//     */
+//    private void showSearchDialog(){
+//        AlertDialog.Builder alerDialog = new AlertDialog.Builder(CommunityActivity.this);
+//        View view = getLayoutInflater().inflate(R.layout.dialog_search,null);
+//        alerDialog.setView(view);
+//        //
+//        final EditText editText = view.findViewById(R.id.edittextSearch);
+//        //
+//        //alerDialog.setTitle("검색");
+//
+//        final AlertDialog dialog = alerDialog.create();
+//
+//        // 확인 버튼 설정
+//        alerDialog.setPositiveButton("검색", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.v(":::::", editText.getText().toString());
+//                dialog.dismiss();
+//            }
+//        });
+//        // 취소 버튼 설정
+//        alerDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.v(":::::", "cancel Btn Click");
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        alerDialog.show();
+//    }
 
     /**
      * 검색 버튼 누르면 껏다 켰다
@@ -452,7 +452,9 @@ public class CommunityActivity extends AppCompatActivity {
 
 
     }
-
+    /**
+     * 검색
+     */
     private void search(String text){
         //본문 내용 초기화
         myDataset.clear();

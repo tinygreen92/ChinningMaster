@@ -47,12 +47,12 @@
                     android:layout_height="match_parent">
 
                     <AutoCompleteTextView
-                        android:id="@+id/editLogin_id"
+                        android:id="@+id/editLogin_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_person_black_24dp"
                         android:drawableStart="@drawable/ic_person_black_24dp"
-                        android:hint="@string/prompt_email"
+                        android:hint="@string/prompt_name"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLines="1"

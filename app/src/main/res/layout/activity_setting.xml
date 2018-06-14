@@ -18,11 +18,13 @@
             android:layout_gravity="center"
             android:background="#bfbfbf" />
 
+        <!--개인정보 수정 페이지 연결-->
         <TextView
-            android:id="@+id/test1"
+            android:id="@+id/editUserInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:padding="15dp"
+            android:textColor="@drawable/custom_label"
             android:text="개인정보 수정"
             android:textSize="20dp" />
 
@@ -32,12 +34,15 @@
             android:layout_margin="5dp"
             android:layout_gravity="center"
             android:background="#bfbfbf" />
+
+        <!--isShared 운동 정보 공개-->
         <TextView
-            android:id="@+id/test2"
+            android:id="@+id/isShared"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:padding="15dp"
             android:text="운동정보 공개 설정"
+            android:textColor="@drawable/custom_label"
             android:textSize="20dp" />
 
         <View
@@ -46,6 +51,59 @@
             android:layout_margin="5dp"
             android:layout_gravity="center"
             android:background="#bfbfbf" />
+
+        <!--자동 로그인 설정-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/autoLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:text="자동 로그인"
+                android:textColor="@drawable/custom_label"
+                android:textSize="20dp" />
+
+            <Switch
+                android:id="@+id/autoLoginSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="15dp"
+                android:checked="true" />
+
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:background="#bfbfbf" />
+
+        <!--로그아웃 후 LoginActivity 이동-->
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="로그아웃"
+            android:textColor="@drawable/custom_label"
+            android:textSize="20dp" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:background="#bfbfbf" />
+
+
 
 
     </LinearLayout>
