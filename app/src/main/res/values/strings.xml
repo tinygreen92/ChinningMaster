@@ -2,7 +2,7 @@
     <string name="app_name">Chinning Master</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_id">ID</string>
+    <string name="prompt_id">제품번호</string>
     <string name="prompt_name">닉네임</string>
     <string name="prompt_password">PW</string>
     <string name="action_sign_in">로그인</string>
@@ -10,7 +10,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_id">아이디가 올바르지 않습니다.</string>
     <string name="error_invalid_password">패스워드가 너무 짧습니다.</string>
-    <string name="error_incorrect_password">패스워드가 올바르지 않습니다.</string>
+    <string name="error_incorrect_password">계정 정보를 확인해주세요.</string>
     <string name="error_field_required">아이디를 입력해주세요.</string>
     <!-- 로그인 부분 String -->
 

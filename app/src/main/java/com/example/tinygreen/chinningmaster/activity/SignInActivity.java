@@ -2,6 +2,7 @@ package com.example.tinygreen.chinningmaster.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,11 +16,6 @@ import com.example.tinygreen.chinningmaster.R;
 import com.example.tinygreen.chinningmaster.models.User;
 import com.example.tinygreen.chinningmaster.retrofit.ApiService;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -36,61 +32,57 @@ public class SignInActivity extends AppCompatActivity {
     /**
      * 레트로핏 설정
      */
-    OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .build();
+//    OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//            .connectTimeout(1, TimeUnit.MINUTES)
+//            .readTimeout(30, TimeUnit.SECONDS)
+//            .writeTimeout(30, TimeUnit.SECONDS)
+//            .build();
+//
+//    private Retrofit retrofit = new Retrofit.Builder()
+//            .baseUrl(ApiService.BASE_URL)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .client(okHttpClient)
+//            .build();
+
 
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(ApiService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
             .build();
 
     private ApiService apiService = retrofit.create(ApiService.class);
 
     // UI references.
     private AutoCompleteTextView mLoginId;
+    private AutoCompleteTextView mLogin_name;
     private EditText mPassword;
     private EditText mPasswordConfirm;
-    private EditText mKinectNum;
     private EditText mResidentNum;
     private EditText mResidentNumTail;
     private EditText mHeight;
     private EditText mWeight;
     // Button
-    //private Button mBackButton;
+    private Button mIdCheakBtn;
+    private Button mNameCheakBtn;
     private Button mSubmitButton;
     //
     private User userInfo = new User();
     private boolean isPass;
+    private boolean isIdCheakPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        mLoginId = findViewById(R.id.editLogin_id);
-        mPassword = findViewById(R.id.editPassword);
-        mPasswordConfirm = findViewById(R.id.editPassword_confirm);
-        mKinectNum = findViewById(R.id.editKinect_num);
-        mResidentNum = findViewById(R.id.editResident_num);
-        mResidentNumTail = findViewById(R.id.editResident_num_tail);
+        mLoginId = findViewById(R.id.eLogin_id);
+        mLogin_name = findViewById(R.id.eLogin_name);
+        mPassword = findViewById(R.id.ePassword);
+        mPasswordConfirm = findViewById(R.id.ePassword_confirm);
+        mResidentNum = findViewById(R.id.eResident_num);
+        mResidentNumTail = findViewById(R.id.eResident_num_tail);
         mHeight = findViewById(R.id.height);
         mWeight = findViewById(R.id.weight);
-
-
-//        /**
-//         * 백버튼 누를때
-//         */
-//        mBackButton = findViewById(R.id.sign_back_button);
-//        mBackButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onBackPressed();
-//            }
-//        });
 
         /**
          * 서밋 버튼
@@ -102,17 +94,44 @@ public class SignInActivity extends AppCompatActivity {
                 String user_id = mLoginId.getText().toString();
                 String user_pw = mPassword.getText().toString();
                 //
-                showDialog();
 
-//                //유효성 검사
-//                if(checkValidity(user_id,user_pw)){
-//                    //id/pw 검사랑 중복검사 true 면
-//                    //JSON post
-//                    retrofitPost(user_id,user_pw);
-//                }
+                //유효성 검사
+                if(checkValidity(user_id,user_pw)){
+                    //id/pw 검사랑 중복검사 true 면
+                    //JSON post
+                    retrofitPost(user_id,user_pw);
+                }
 
             }
         });
+//        /**
+//         * id 쳌
+//         */
+//        mIdCheakBtn = findViewById(R.id.idCheakBtn);
+//        mIdCheakBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String user_id = mLoginId.getText().toString();
+//                String user_pw = mPassword.getText().toString();
+//                /**
+//                 * TODO :  서버 연결시 스위칭
+//                 */
+//                //showIdDialog();
+//                idDoubleCheck(user_id, user_pw);
+//            }
+//        });
+        /**
+         * name 쳌
+         */
+        mNameCheakBtn = findViewById(R.id.nameCheakBtn);
+        mNameCheakBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SignInActivity.this,"사용할 수 있는 ID입니다.",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     /**
@@ -125,54 +144,77 @@ public class SignInActivity extends AppCompatActivity {
         if(!Pattern.matches("^[a-zA-Z0-9]*$", id)) {
             isPass = false;
             Toast.makeText(this,"ID는 영문 대, 소문자와 숫자만 사용 가능합니다.",Toast.LENGTH_SHORT).show();
-        } else if(!Pattern.matches("^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~`#?!@$%^&*-]).{6,}$", pw)) {
+        }else if(!Pattern.matches("^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~`#?!@$%^&*-]).{6,}$", pw)) {
             isPass = false;
             Toast.makeText(this,"PW에 6자 이상의 영문 소문자, 숫자, 특수문자(~`#?!@$%^&*)를 포함하세요.",Toast.LENGTH_SHORT).show();
         }
-        //아이디 중복체크
-        if(isPass){
-            //통과하면
-            idDoubleCheck(id,pw);
-        }
+//        //아이디 중복체크
+//        if(isPass){
+//            //통과하면
+//            idDoubleCheck(id,pw);
+//        }
 
         return isPass;
     }
+//    /**
+//     * 아이디 중복 체크 TODO : 수정할 것!!!!!!!!!!!!!!!!!!!!!
+//     * EnterEditPersonalInfo?user_id=kosaf <- 요걸사용
+//     */
+//    private void idDoubleCheck(String id){
+//
+//        Call<ResponseBody> enterPersonalInfo = apiService.enterPersonalInfo(id);
+//        enterPersonalInfo.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//
+//                if (response.isSuccessful()) {
+//                    Log.e("::::::Successful", "성공");
+//                    //DB에 같은 아이디가 있다면 사용불가 메세지
+//                    //isPass = false;
+//                    showIdDialog();
+//
+//                } else {
+//                    Log.e("::::::Error", "에러");
+//                    // 해당 유저 없으면 실패할테니.
+//                    Toast.makeText(SignInActivity.this,"사용할 수 있는 ID입니다.",Toast.LENGTH_SHORT).show();
+//                    isIdCheakPass = true;
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Log.e("::::::Failure", t.toString());
+//
+//            }
+//        });
+//    }
+
     /**
-     * 아이디 중복 체크
+     * 백버튼 누를때
      */
-    private void idDoubleCheck(String id, String pw){
+    public void onBackPressed() {
+        //하나라도 내용이 있을때
+        if(
+                mLoginId.getText().length() != 0 ||
+                mLogin_name.getText().length() != 0 ||
+                mPassword.getText().length() != 0 ||
+                mPasswordConfirm.getText().length() != 0 ||
+                mResidentNum.getText().length() != 0 ||
+                mResidentNumTail.getText().length() != 0 ||
+                mHeight.getText().length() != 0 ||
+                mWeight.getText().length() != 0 ){
+            //경고창
 
-        Call<ResponseBody> checkLogin = apiService.checkLogin(id, pw);
-        checkLogin.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if (response.isSuccessful()) {
-                    Log.e("::::::Successful", "성공");
-                    if(response.body().toString()=="true"){
-                        isPass = false;
-                        Toast.makeText(SignInActivity.this,"이미 사용중인 ID입니다.",Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(SignInActivity.this,"사용할 수 있는 ID입니다.",Toast.LENGTH_SHORT).show();
-
-                    }
-
-                } else {
-                    Log.e("::::::Error", "에러");
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("::::::Failure", t.toString());
-
-            }
-        });
+            showNotEmptyDialog();
+        }
+        Log.e("::어쩌라구요::",String.valueOf(mLoginId.getText().length()));
     }
 
-    private void showDialog(){
+    /**
+     * 입력값있다 경고
+     */
+    private void showNotEmptyDialog(){
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignInActivity.this);
         //
@@ -183,12 +225,32 @@ public class SignInActivity extends AppCompatActivity {
         alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Log.v(":::::", editText.getText().toString());
+                finish();
                 dialog.dismiss();
             }
         });
 
         alertDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    /**
+     * 닉네임 중복 경고
+     */
+    private void showNameDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignInActivity.this);
+        //
+        alertDialog.setTitle("알림");
+        alertDialog.setMessage("이미 사용중인 닉네임 입니다.");
+        // 확인 버튼 설정
+        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -213,7 +275,7 @@ public class SignInActivity extends AppCompatActivity {
         // 값 넣기
         userInfo.user_id = id;
         userInfo.user_pw = pw;
-        userInfo.name = "Test value";
+        userInfo.name = mLogin_name.getText().toString();
         userInfo.birth_date = Integer.parseInt(mResidentNum.getText().toString());
         userInfo.height = Integer.parseInt(mHeight.getText().toString());
         userInfo.weight = Integer.parseInt(mWeight.getText().toString());
@@ -240,6 +302,33 @@ public class SignInActivity extends AppCompatActivity {
 
             }
         });
+        /**
+         * 레트로핏 통신 끝난 다음 실행할 것.
+         */
+        //성별 저장해서 BMI 수치 표시에 쓸것.
+        putStringUserSex();
+    }
+
+    /**
+     * SharedPreferences 에 사용자 성별 넣기
+     */
+    private void putStringUserSex(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        String userSex = mResidentNumTail.getText().toString();
+        editor.putString("userSex", userSex);
+        editor.commit();
+    }
+
+    /**
+     * SharedPreferences 에 사용자 성별 넣기
+     */
+    private void putStringSameName(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        String userSex = mResidentNumTail.getText().toString();
+        editor.putString("userSex", userSex);
+        editor.commit();
     }
 
 }

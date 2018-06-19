@@ -52,7 +52,7 @@
                         android:layout_weight="50">
 
                         <AutoCompleteTextView
-                            android:id="@+id/editLogin_id"
+                            android:id="@+id/eLogin_id"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_person_black_24dp"
@@ -65,15 +65,15 @@
 
                     </android.support.design.widget.TextInputLayout>
 
-                    <Button
-                        android:id="@+id/idCheakBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textStyle="bold"
-                        android:background="@drawable/custom_button_2"
-                        android:textColor="#FFFFFF"
-                        android:text="중복확인" />
+                    <!--<Button-->
+                        <!--android:id="@+id/idCheakBtn"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:background="@drawable/custom_button_2"-->
+                        <!--android:textColor="#FFFFFF"-->
+                        <!--android:text="중복확인" />-->
 
                 </LinearLayout>
 
@@ -90,7 +90,7 @@
                         android:layout_weight="50">
 
                         <AutoCompleteTextView
-                            android:id="@+id/editLogin_name"
+                            android:id="@+id/eLogin_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_person_black_24dp"
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/editPassword"
+                        android:id="@+id/ePassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_lock_black_24dp"
@@ -143,7 +143,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/editPassword_confirm"
+                        android:id="@+id/ePassword_confirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_lock_black_24dp"
@@ -157,24 +157,24 @@
                 </android.support.design.widget.TextInputLayout>
 
 
-                <!-- 제품 등록 번호 -->
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <!--&lt;!&ndash; 제품 등록 번호 &ndash;&gt;-->
+                <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
 
-                    <EditText
-                        android:id="@+id/editKinect_num"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_tablet_android_black_24dp"
-                        android:drawableStart="@drawable/ic_tablet_android_black_24dp"
-                        android:hint="제품등록번호"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:singleLine="true" />
+                    <!--<EditText-->
+                        <!--android:id="@+id/eKinect_num"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:drawableLeft="@drawable/ic_tablet_android_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_tablet_android_black_24dp"-->
+                        <!--android:hint="제품등록번호"-->
+                        <!--android:imeOptions="actionNext"-->
+                        <!--android:inputType="text"-->
+                        <!--android:maxLines="1"-->
+                        <!--android:singleLine="true" />-->
 
-                </android.support.design.widget.TextInputLayout>
+                <!--</android.support.design.widget.TextInputLayout>-->
 
                 <TextView
                     android:id="@+id/link_login"
@@ -200,7 +200,7 @@
                         android:text="" />
 
                         <EditText
-                            android:id="@+id/editResident_num"
+                            android:id="@+id/eResident_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:hint="주민번호 앞 6자리"
@@ -223,7 +223,7 @@
 
 
                         <EditText
-                            android:id="@+id/editResident_num_tail"
+                            android:id="@+id/eResident_num_tail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:hint="*"

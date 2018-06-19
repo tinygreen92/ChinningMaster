@@ -122,11 +122,12 @@ public class ArticleActivity extends AppCompatActivity {
 
         /**
          * JSON 뿌려주기
+         * TODO : 서버키면 바꿔줄 것
          */
 
         articleId += 1;
-        //addItem(articleId);
-        addItem2(articleId);
+        addItem(articleId);
+        //addItem2(articleId);
 
 
     }

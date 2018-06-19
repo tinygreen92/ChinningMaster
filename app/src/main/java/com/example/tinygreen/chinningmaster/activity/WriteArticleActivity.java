@@ -93,12 +93,9 @@ public class WriteArticleActivity extends AppCompatActivity {
                  * TODO : user_id 는 이전 Activityt에서 인텐트로 받아서 넣어야한다.
                  * 아니면 DB 오류뜸. 임시로 signin 박아넣은거 쓰셈.
                  */
-                article.user_id = "helpme";
+                article.user_id = "testtt";
                 article.article_id = 0;
                 //article.time = null; DB 자동 생성?
-
-
-
 
                 Call<Article> writeArticle = apiService.writeArticle(article);
                 writeArticle.enqueue(new Callback<Article>() {
@@ -118,6 +115,8 @@ public class WriteArticleActivity extends AppCompatActivity {
                         Log.e("::::::Failure", t.toString());
                     }
                 });
+
+
             }
         });
 
@@ -146,6 +145,12 @@ public class WriteArticleActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
 
     /**
      * POST로 쏘아보내기

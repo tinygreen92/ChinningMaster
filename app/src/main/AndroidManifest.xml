@@ -30,15 +30,7 @@
             android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/FullscreenTheme" />
-        <activity
             android:name=".activity.SignInActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.Retrofit2Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.CommunityActivity"
@@ -54,7 +46,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.MyWorkActivity" />
-        <activity android:name=".activity.EditUserInfoActivity"></activity>
+        <activity
+            android:name=".activity.EditUserInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.RankingActivity"></activity>
     </application>
 
 </manifest>

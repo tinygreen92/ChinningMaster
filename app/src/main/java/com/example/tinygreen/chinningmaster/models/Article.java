@@ -13,7 +13,6 @@ public class Article {
     public String title;
     public String content;
     public String workout_record;
-    //TODO : time은 GET 할때만 필요한가?
     public String time;
 
     public Article() {

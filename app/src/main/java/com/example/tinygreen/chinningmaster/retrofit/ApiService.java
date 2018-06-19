@@ -6,6 +6,7 @@ import com.example.tinygreen.chinningmaster.models.User;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -25,6 +26,13 @@ public interface ApiService {
     @GET("/login")
     Call<ResponseBody> checkLogin(@Query("user_id") String id, @Query("user_pw") String pw);
 
+//    @FormUrlEncoded
+//    @POST("/EnterEditPersonalInfo")
+//    Call<ResponseBody> enterPersonalInfo(@Field("user_id") String id);
+
+    @GET("/EnterEditPersonalInfo")
+    Call<ResponseBody> enterPersonalInfo(@Query("user_id") String id);
+
     @POST("/WriteArticle")
     Call<Article> writeArticle(@Body Article article);
 
@@ -34,5 +42,8 @@ public interface ApiService {
 
     @GET("/GetAllArticle")
     Call<ResponseBody> getAllArticle();
+
+    @GET("/GetAllUserRecord")
+    Call<ResponseBody> getAllUserRecord();
 
 }

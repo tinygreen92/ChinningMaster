@@ -126,8 +126,8 @@ public class CommunityActivity extends AppCompatActivity {
          * TODO : 서버 켤때 바꿔라
          */
 
-        //addListItem();
-        addListItem2();
+        addListItem();
+        //addListItem2();
 
 
         /**
@@ -299,6 +299,7 @@ public class CommunityActivity extends AppCompatActivity {
                     try {
                         String result = response.body().string();
                         JSONArray jsonArray = new JSONArray(result);
+                        Log.e("::::::jsonArray", jsonArray.toString());
 
                         //
                         int article_id;
@@ -318,7 +319,7 @@ public class CommunityActivity extends AppCompatActivity {
                             workout_record = jsonObject.getString("workout_record");
                             time = jsonObject.getString("time");
 
-                            Log.e("::::::::", jsonArray.getJSONObject(i).toString());
+                            Log.e("::::::jsonObject::", jsonObject.toString());
 
                             //카드뷰 추가
                             myDataset.add(new Article(article_id, user_id, title, content, workout_record, time));

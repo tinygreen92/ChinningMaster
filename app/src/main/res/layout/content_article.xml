@@ -173,7 +173,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
-            android:id="@+id/editResident_num"
+            android:id="@+id/eResident_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

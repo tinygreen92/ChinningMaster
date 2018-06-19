@@ -77,7 +77,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/myWorkTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -90,7 +90,7 @@
             android:textSize="30dp" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/rankTv"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,13 +98,13 @@
             android:background="@drawable/background"
             android:paddingLeft="18dp"
             android:gravity="center_vertical"
-            android:text="전체 사용자 기록 확인"
+            android:text="전체 사용자 기록"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:textSize="30dp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/communityTv"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

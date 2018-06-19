@@ -47,6 +47,26 @@
                     android:layout_height="match_parent">
 
                     <AutoCompleteTextView
+                        android:id="@+id/editLogin_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_person_black_24dp"
+                        android:drawableStart="@drawable/ic_person_black_24dp"
+                        android:hint="@string/prompt_id"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <AutoCompleteTextView
                         android:id="@+id/editLogin_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -76,46 +96,6 @@
                         android:hint="@string/prompt_password"
                         android:imeOptions="actionNext"
                         android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <!-- 비번 확인 -->
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/editPassword_confirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_lock_black_24dp"
-                        android:drawableStart="@drawable/ic_lock_black_24dp"
-                        android:hint="PW 확인"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </android.support.design.widget.TextInputLayout>
-
-
-                <!-- 제품 등록 번호 -->
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/editKinect_num"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_tablet_android_black_24dp"
-                        android:drawableStart="@drawable/ic_tablet_android_black_24dp"
-                        android:hint="제품등록번호"
-                        android:imeOptions="actionNext"
-                        android:inputType="text"
                         android:maxLines="1"
                         android:singleLine="true" />
 
@@ -205,7 +185,7 @@
                         android:layout_weight="4">
 
                         <EditText
-                            android:id="@+id/height"
+                            android:id="@+id/editHeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_person_black_24dp"
@@ -233,7 +213,7 @@
                         android:layout_weight="4">
 
                         <EditText
-                            android:id="@+id/weight"
+                            android:id="@+id/editWeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_person_black_24dp"
@@ -263,7 +243,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <Button
-                        android:id="@+id/sign_back_button"
+                        android:id="@+id/edit_back_button"
                         style="?android:textAppearanceSmall"
                         android:layout_width="180dp"
                         android:layout_height="50dp"
@@ -276,7 +256,7 @@
                         android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/sign_in_button"
+                        android:id="@+id/edit_submit"
                         style="?android:textAppearanceSmall"
                         android:layout_width="180dp"
                         android:layout_height="50dp"

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,11 +27,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tinygreen.chinningmaster.R;
+import com.example.tinygreen.chinningmaster.retrofit.ApiService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A login screen that offers login via login_id/password.
  */
 public class LoginActivity extends AppCompatActivity {
+
+    /**
+     * 레트로핏 설정
+     */
+    private Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(ApiService.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    private ApiService apiService = retrofit.create(ApiService.class);
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -42,10 +68,10 @@ public class LoginActivity extends AppCompatActivity {
      * 더미 정보 저장
      * TODO: remove after connecting to a real authentication system. 나중에 실제 DB값 받아올때 지워
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            //ID:PW
-            "foo:hello", "bar:world" ,"test:12345"
-    };
+//    private static final String[] DUMMY_CREDENTIALS = new String[]{
+//            //ID:PW
+//            "foo:hello", "bar:world" ,"test:12345"
+//    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      * 로그인 취소 할 수도 있으니까 계속 추적
@@ -63,7 +89,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button mExitButton;
 
     private TextView mRegisterBtn;
-
+    //로그인 성공 판별
+    private Boolean isPass = false;
     //뒤로가기 두번 눌러 종료 시간
     private long backKeyPressedTime = 0;
 
@@ -92,10 +119,10 @@ public class LoginActivity extends AppCompatActivity {
         /**
          * 아이디 패스워드 id password
          */
-        mIdView = findViewById(R.id.editLogin_id);
+        mIdView = findViewById(R.id.Login_id);
         //populateAutoComplete();
 
-        mPasswordView = findViewById(R.id.editPassword);
+        mPasswordView = findViewById(R.id.Password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -109,18 +136,18 @@ public class LoginActivity extends AppCompatActivity {
         /**
          * 로그인 버튼
          */
-        mSignInButton = findViewById(R.id.sign_in_button);
+        mSignInButton = findViewById(R.id.log_in_button);
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //더미
-                String intentUserId = "치닝마스터";
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("USERNAME",intentUserId);
-                startActivity(intent);
+//                //더미
+//                String intentUserId = "치닝마스터";
+//                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+//                intent.putExtra("USERID",intentUserId);
+//                startActivity(intent);
 
                 //TODO : 주석 처리 풀고 위의 인텐트 삭제할 것
-                //attemptLogin();
+                attemptLogin();
 
             }
         });
@@ -131,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
         mExitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), WriteArticleActivity.class);
+                Intent intent = new Intent(getBaseContext(), ArticleActivity.class);
                 startActivity(intent);
 
                 //finish();
@@ -156,11 +183,58 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-    }
-    /**
-     * onCreate -end-
-     */
+    } // onCreate END
 
+    /**
+     * 로그인 판별
+     */
+    private void loginCheck(String id, String pw){
+        Call<ResponseBody> checkLogin = apiService.checkLogin(id, pw);
+        checkLogin.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.e("::::::Successful", "성공");
+                    try {
+                        String result = response.body().string();
+                        JSONArray jsonArray = new JSONArray(result);
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        //
+                        Log.e("::::::jsonObject", String.valueOf(jsonObject.getBoolean("result")));
+                        //
+                        if(jsonObject.getBoolean("result")){
+                            //TODO : 로그인 성공
+                            isPass = true;
+                            Toast.makeText(LoginActivity.this,"닉네임~으로 로그인 하셨습니다.",Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(LoginActivity.this,"계정 정보를 확인해주세요.",Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Log.e("::::::Error", "에러");
+                    Toast.makeText(LoginActivity.this,"계정 정보를 확인해주세요.",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("::::::Failure", t.toString());
+
+            }
+        });
+    }
+
+
+    /**
+     * 뒤로가기 두 번 누르면 종료
+     */
     public void onBackPressed() {
 
         if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
@@ -206,13 +280,17 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        // 패스워드 비어있지않고, 4자 이하면
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password)); // 패스워드가 너무 짧다
-            focusView = mPasswordView;
-            cancel = true;
-        }
+        /**
+         *  TODO : 비번 체크 필요해?
+         */
+
+//        // Check for a valid password, if the user entered one.
+//        // 패스워드 비어있지않고, 5자 이하면
+//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+//            mPasswordView.setError(getString(R.string.error_invalid_password)); // 패스워드가 너무 짧다
+//            focusView = mPasswordView;
+//            cancel = true;
+//        }
 
         // Check for a valid login_id address.
         // 아이디 비어있니?
@@ -239,10 +317,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: 패스워드 규칙 멀루 하까
-        return password.length() > 5;
-    }
+//    private boolean isPasswordValid(String password) {
+//        //TODO: 패스워드 규칙 멀루 하까
+//        return password.length() > 5;
+//    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -297,29 +375,34 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            String loginId = mIdView.getText().toString();
+            String password = mPasswordView.getText().toString();
 
             try {
                 // Simulate network access.
-                /**
-                 *  TODO: attempt authentication against a network service. 여따가 JSON 가져오는거.
-                 */
+                loginCheck(loginId,password);
                 Thread.sleep(1000);
 
             } catch (InterruptedException e) {
                 return false;
             }
-            // 회원정보 대조
-            // TODO : JSON 구축하면 더미 날릴 것
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mLoginId)) {
-                    // Account exists, return true if the password matches.
-                    // ID PW 일치하면 true
-                    return pieces[1].equals(mPassword);
-                }
-            }
+//            // 회원정보 대조
+//            // TODO : JSON 구축하면 더미 날릴 것
+//            for (String credential : DUMMY_CREDENTIALS) {
+//                String[] pieces = credential.split(":");
+//                if (pieces[0].equals(mLoginId)) {
+//                    // Account exists, return true if the password matches.
+//                    // ID PW 일치하면 true
+//                    return pieces[1].equals(mPassword);
+//                }
+//            }
 
-            return false;
+
+
+
+            // TODO : 여기서 True 넘겨야 로그인 된다ㅏㅏㅏ
+            return isPass;
+            //return loginCheck(loginId,password);
         }
 
         @Override
@@ -330,9 +413,13 @@ public class LoginActivity extends AppCompatActivity {
             if (success) {
                 // TODO : 로그인 성공시 동작.
                 String intentUserId = mIdView.getText().toString();
-
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("userId", intentUserId);
+                editor.commit();
+                //
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("USERNAME",intentUserId);
+                //intent.putExtra("USERID",intentUserId);
                 startActivity(intent);
                 //finish();
 

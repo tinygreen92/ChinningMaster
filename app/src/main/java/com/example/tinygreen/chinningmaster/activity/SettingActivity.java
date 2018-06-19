@@ -54,6 +54,8 @@ public class SettingActivity extends AppCompatActivity {
         mEditUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), EditUserInfoActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -79,7 +81,7 @@ public class SettingActivity extends AppCompatActivity {
                 //토글
                 loginAutoChecked = !loginAutoChecked;
                 //
-                SharedPreferences autoLogin = getSharedPreferences("autoLogin", getBaseContext().MODE_PRIVATE);
+                SharedPreferences autoLogin = getSharedPreferences("autoLogin", MODE_PRIVATE);
                 SharedPreferences.Editor editor = autoLogin.edit();
                 editor.putBoolean("autoLogin", loginAutoChecked);
                 editor.commit();
@@ -94,15 +96,8 @@ public class SettingActivity extends AppCompatActivity {
         mAutoLoginSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                loginAutoChecked = isChecked;
-                //
-                SharedPreferences autoLogin = getSharedPreferences("autoLogin", getBaseContext().MODE_PRIVATE);
-                SharedPreferences.Editor editor = autoLogin.edit();
-                editor.putBoolean("autoLogin", loginAutoChecked);
-                editor.commit();
-                //
-                mAutoLoginSwitch.setChecked(loginAutoChecked);
-                Toast.makeText(SettingActivity.this, "체크상태 = " + loginAutoChecked, Toast.LENGTH_SHORT).show();
+                //SharedPreferences put
+                putStringAutoLogin(isChecked);
             }
         });
 
@@ -122,6 +117,12 @@ public class SettingActivity extends AppCompatActivity {
                 //
                 SharedPreferences autoLogin = getSharedPreferences("autoLogin", getBaseContext().MODE_PRIVATE);
                 SharedPreferences.Editor editor = autoLogin.edit();
+                //
+                editor.clear();
+                editor.commit();
+                //
+                SharedPreferences pref = getSharedPreferences("pref", getBaseContext().MODE_PRIVATE);
+                editor = pref.edit();
                 //
                 editor.clear();
                 editor.commit();
@@ -147,5 +148,20 @@ public class SettingActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     *
+     */
+    private void putStringAutoLogin(boolean isChecked){
+        loginAutoChecked = isChecked;
+        //
+        SharedPreferences autoLogin = getSharedPreferences("autoLogin", MODE_PRIVATE);
+        SharedPreferences.Editor editor = autoLogin.edit();
+        editor.putBoolean("autoLogin", loginAutoChecked);
+        editor.commit();
+        //
+        mAutoLoginSwitch.setChecked(loginAutoChecked);
+        Toast.makeText(SettingActivity.this, "체크상태 = " + loginAutoChecked, Toast.LENGTH_SHORT).show();
     }
 }
