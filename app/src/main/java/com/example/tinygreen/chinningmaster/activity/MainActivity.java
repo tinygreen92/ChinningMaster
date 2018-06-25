@@ -58,11 +58,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /**
-         * LoginAct 에서 인텐트 받아오기
+         * SharedPreferences 에서 유저아이디 가져와서 retrofit 호출
          */
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         String userId = pref.getString("userId", "");
+        //TODO : 서버 켜지면 스위치
         getUserName(userId);
+        //getUserName2(userId);
 
 
 //        /**
@@ -149,7 +151,52 @@ public class MainActivity extends AppCompatActivity {
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
+    /**
+     * TODO : 더미 데이터 지울 것
+     */
+    private void getUserName2(String userId){
+        try {
+            String result = "[\n" +
+                    "  {\n" +
+                    "    \"user_id\": \"qwer1234\",\n" +
+                    "    \"user_pw\": \"qwer1234!\",\n" +
+                    "    \"birth_date\": 930414,\n" +
+                    "    \"name\": 짱짱맨,\n" +
+                    "    \"height\": 173,\n" +
+                    "    \"weight\": 78\n" +
+                    "  }\n" +
+                    "]";
 
+            JSONArray jsonArray = new JSONArray(result);
+            JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+            String userName = jsonObject.getString("name");
+            int birth_date = jsonObject.getInt("birth_date");
+            int height = jsonObject.getInt("height");
+            int weight = jsonObject.getInt("weight");
+            //
+            SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("userName", userName);
+            editor.putInt("birth_date", birth_date);
+            editor.putInt("height", height);
+            editor.putInt("weight", weight);
+            editor.commit();
+
+            /**
+             * 상단 표시 데이터
+             */
+
+            mBMIVTv = findViewById(R.id.BMI_textView);
+            mBMIVTv.setText(bmiLogic(height,weight));
+
+            mUserHelloTv = findViewById(R.id.user_hello);
+            mUserHelloTv.setText("["+userName+"]님 환영합니다!");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 리스트 뿌리기
      */
@@ -168,16 +215,24 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject jsonObject = jsonArray.getJSONObject(0);
 
                         String userName = jsonObject.getString("name");
+                        int birth_date = jsonObject.getInt("birth_date");
+                        int height = jsonObject.getInt("height");
+                        int weight = jsonObject.getInt("weight");
+                        //
                         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("userName", userName);
+                        editor.putInt("birth_date", birth_date);
+                        editor.putInt("height", height);
+                        editor.putInt("weight", weight);
                         editor.commit();
 
                         /**
                          * 상단 표시 데이터
                          */
 
-                        //mImageView = findViewById(R.id.imageView);
+                        mBMIVTv = findViewById(R.id.BMI_textView);
+                        mBMIVTv.setText(bmiLogic(height,weight));
 
                         mUserHelloTv = findViewById(R.id.user_hello);
                         mUserHelloTv.setText("["+userName+"]님 환영합니다!");
@@ -200,6 +255,38 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * BMI 수치 계산 메소드
+     */
+    private String bmiLogic(int height, int weight){
+        //BMI(Body Mass Index) = 체중을 자기 키의 제곱으로 나눈 값.
+        float h = (float) 100.0;
+        float fHeight = height/h;
+        float result = weight/(fHeight * fHeight);
+        String sResult = "BMI 수치 : " + String.format("%.1f", result);
+        String textStus;
+        //
+        if(result < 18.5){
+            textStus = "(저체중)";
+        }else if(result >= 18.50 && result < 23.0){
+            textStus = "(표준체중)";
+        }else if(result >= 23.0 && result < 25.0){
+            textStus = "(과체중 경고)";
+        }else if(result >= 25.0 && result < 27.0){
+            textStus = "(과체중)";
+        }else if(result >= 27.0 && result < 30.0){
+            textStus = "(경도비만)";
+        }else if(result >= 30.0 && result < 35.0){
+            textStus = "(고도비만)";
+        }else if(result >= 35.0){
+            textStus = "(초고도비만)";
+        }else return "()";
+
+
+        return sResult + textStus;
+
     }
 
 }

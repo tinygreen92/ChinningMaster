@@ -69,6 +69,7 @@ public class SignInActivity extends AppCompatActivity {
     private User userInfo = new User();
     private boolean isPass;
     private boolean isIdCheakPass;
+    private boolean isNameCheakOk = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +100,11 @@ public class SignInActivity extends AppCompatActivity {
                 if(checkValidity(user_id,user_pw)){
                     //id/pw 검사랑 중복검사 true 면
                     //JSON post
-                    retrofitPost(user_id,user_pw);
+                    if(isNameCheakOk){
+                        retrofitPost(user_id,user_pw);
+                        finish();
+                    } else NameOkDialog();
+
                 }
 
             }
@@ -127,7 +132,8 @@ public class SignInActivity extends AppCompatActivity {
         mNameCheakBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SignInActivity.this,"사용할 수 있는 ID입니다.",Toast.LENGTH_SHORT).show();
+                isNameCheakOk = true;
+                showNameOkDialog();
             }
         });
 
@@ -262,6 +268,46 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
+     * 닉네임 사용 가능
+     */
+    private void showNameOkDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignInActivity.this);
+        //
+        alertDialog.setTitle("알림");
+        alertDialog.setMessage("사용 할 수 있는 닉네임 입니다.");
+        // 확인 버튼 설정
+        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    /**
+     * 닉네임 사용 가능
+     */
+    private void NameOkDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignInActivity.this);
+        //
+        alertDialog.setTitle("알림");
+        alertDialog.setMessage("중복 확인 버튼을 클릭해주세요.");
+        // 확인 버튼 설정
+        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
+    /**
      * POST 형식으로 보내
      */
     private void retrofitPost(String id, String pw){
@@ -313,17 +359,6 @@ public class SignInActivity extends AppCompatActivity {
      * SharedPreferences 에 사용자 성별 넣기
      */
     private void putStringUserSex(){
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        String userSex = mResidentNumTail.getText().toString();
-        editor.putString("userSex", userSex);
-        editor.commit();
-    }
-
-    /**
-     * SharedPreferences 에 사용자 성별 넣기
-     */
-    private void putStringSameName(){
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         String userSex = mResidentNumTail.getText().toString();

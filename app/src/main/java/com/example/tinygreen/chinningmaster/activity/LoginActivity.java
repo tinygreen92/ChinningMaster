@@ -145,8 +145,6 @@ public class LoginActivity extends AppCompatActivity {
 //                Intent intent = new Intent(getBaseContext(), MainActivity.class);
 //                intent.putExtra("USERID",intentUserId);
 //                startActivity(intent);
-
-                //TODO : 주석 처리 풀고 위의 인텐트 삭제할 것
                 attemptLogin();
 
             }
@@ -158,10 +156,15 @@ public class LoginActivity extends AppCompatActivity {
         mExitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ArticleActivity.class);
-                startActivity(intent);
+                //TODO : 시연 전 삭제 할것
+                moveTaskToBack(true);
+                finish();
+                //프로세스 킬
+                android.os.Process.killProcess(android.os.Process.myPid());
+                //그래프 조지기
+//                Intent intent = new Intent(getBaseContext(), MyWorkActivity.class);
+//                startActivity(intent);
 
-                //finish();
             }
         });
         /**
@@ -186,6 +189,15 @@ public class LoginActivity extends AppCompatActivity {
     } // onCreate END
 
     /**
+     * 더미 로그인
+     */
+    private void loginCheck2(String id, String pw){
+        isPass = true;
+        //Toast.makeText(LoginActivity.this, "님 환영합니다.",Toast.LENGTH_SHORT).show();
+    }
+
+
+    /**
      * 로그인 판별
      */
     private void loginCheck(String id, String pw){
@@ -205,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
                         if(jsonObject.getBoolean("result")){
                             //TODO : 로그인 성공
                             isPass = true;
-                            Toast.makeText(LoginActivity.this,"닉네임~으로 로그인 하셨습니다.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "로그인 성공",Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(LoginActivity.this,"계정 정보를 확인해주세요.",Toast.LENGTH_SHORT).show();
                         }
@@ -380,7 +392,11 @@ public class LoginActivity extends AppCompatActivity {
 
             try {
                 // Simulate network access.
+                /**
+                 * TODO : 서버 켜지면 스위칭
+                 */
                 loginCheck(loginId,password);
+                //loginCheck2(loginId,password);
                 Thread.sleep(1000);
 
             } catch (InterruptedException e) {
@@ -396,9 +412,6 @@ public class LoginActivity extends AppCompatActivity {
 //                    return pieces[1].equals(mPassword);
 //                }
 //            }
-
-
-
 
             // TODO : 여기서 True 넘겨야 로그인 된다ㅏㅏㅏ
             return isPass;

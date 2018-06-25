@@ -37,7 +37,7 @@
                     android:id="@+id/articleTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:padding="10dp"
                     android:text="글 제목"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -87,8 +87,11 @@
                 android:id="@+id/articleContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_marginBottom="100dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="100dp"
+                android:layout_marginBottom="10dp"
                 android:text="글 내용"
                 android:textSize="18dp" />
 
@@ -114,26 +117,37 @@
                     android:layout_gravity="center"
                     android:background="#bfbfbf" />
 
+                <!--액티비티에 메소드 정의해서 권한에 따라 show/hide 할것-->
                 <LinearLayout
                     android:id="@+id/myArticleLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:gravity="center">
 
                     <Button
-                        android:id="@+id/backButton"
+                        android:id="@+id/articleEdit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="수정" />
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/custom_button"
+                        android:layout_weight="1"
+                        android:text="수정"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold"/>
 
                     <Button
-                        android:id="@+id/backButton2"
+                        android:id="@+id/articleDelete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="삭제" />
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/custom_button"
+                        android:layout_weight="1"
+                        android:text="삭제"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold"/>
 
 
                 </LinearLayout>
@@ -173,7 +187,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
-            android:id="@+id/eResident_num"
+            android:id="@+id/eReplyWrite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

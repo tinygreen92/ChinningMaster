@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="#e1e1e1"
     tools:context=".activity.CommunityActivity">
 
     <android.support.design.widget.AppBarLayout

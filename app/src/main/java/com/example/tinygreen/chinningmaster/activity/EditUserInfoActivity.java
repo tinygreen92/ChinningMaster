@@ -91,8 +91,6 @@ public class EditUserInfoActivity extends AppCompatActivity {
                         mEditHeight.setText(jsonObject.getString("height"));
                         mEditWeight.setText(jsonObject.getString("weight"));
 
-
-
                         /**
                          * mEditResident_num_tail <- 이거 어떻게??
                          */

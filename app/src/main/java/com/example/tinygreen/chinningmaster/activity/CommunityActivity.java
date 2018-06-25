@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -171,11 +172,12 @@ public class CommunityActivity extends AppCompatActivity {
                     //클릭한 위치 받아옴 - 맨 위부터 0
                     int position = rv.getChildLayoutPosition(child);
                     //yes/no
-                    Toast.makeText(getApplicationContext(),position + " 번째 클릭",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),position + " 번째 클릭",Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getBaseContext(), ArticleActivity.class);
                     intent.putExtra("position",position);
                     startActivity(intent);
+                    finish();
 
                 }
 
@@ -237,6 +239,13 @@ public class CommunityActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        myDataset.clear();
+        addListItem();
     }
 
     @Override
@@ -313,11 +322,13 @@ public class CommunityActivity extends AppCompatActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                             article_id = jsonObject.getInt("article_id");
-                            user_id = jsonObject.getString("user_id");
+                            //user_id = jsonObject.getString("user_id");
+                            user_id = jsonObject.getString("name");
                             title = jsonObject.getString("title");
                             content = jsonObject.getString("content");
                             workout_record = jsonObject.getString("workout_record");
-                            time = jsonObject.getString("time");
+                            time = jsonObject.getString("time").substring(0,10);
+                            //time = jsonObject.getString("time");
 
                             Log.e("::::::jsonObject::", jsonObject.toString());
 
@@ -326,8 +337,10 @@ public class CommunityActivity extends AppCompatActivity {
                             //검색을 위한 데이터 복붙
                             searchDataset = new ArrayList<>();
                             searchDataset.addAll(myDataset);
-
                         }
+                        //검색을 위한 데이터 복붙
+                        searchDataset = new ArrayList<>();
+                        searchDataset.addAll(myDataset);
                         //새로고침
                         mAdapter.notifyDataSetChanged();
 
@@ -519,6 +532,8 @@ public class CommunityActivity extends AppCompatActivity {
 
         return mFormat.format(mDate);
     }
+
+
 
 
 }

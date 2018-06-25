@@ -45,8 +45,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //내용물이랑 스크롤
         holder.mTextTitleView.setText(mDataset.get(position).title.toString());
         holder.mTextContentView.setText(mDataset.get(position).content.toString());
-        holder.mTextArticleIdView.setText(String.valueOf(mDataset.get(position).article_id));
+//        holder.mTextArticleIdView.setText(String.valueOf(mDataset.get(position).article_id));
         holder.mTextTimeView.setText(mDataset.get(position).time.toString());
+        holder.mTextUserIdView.setText(mDataset.get(position).user_id.toString());
     }
 
     @Override
@@ -68,6 +69,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView mTextContentView;
         private TextView mTextArticleIdView;
         private TextView mTextTimeView;
+        private TextView mTextUserIdView;
         /**
          * TODO : 리플 갯수 얻어오기
          */
@@ -77,9 +79,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(view);
             mTextTitleView = view.findViewById(R.id.textTitle);
             mTextContentView = view.findViewById(R.id.textContent);
-            mTextArticleIdView = view.findViewById(R.id.textArticleId);
+//            mTextArticleIdView = view.findViewById(R.id.textArticleId);
             mTextTimeView = view.findViewById(R.id.textTime);
             mTextReplyCntView = view.findViewById(R.id.textReplyCnt);
+            mTextUserIdView = view.findViewById(R.id.textUserId);
             //뷰에 리스너 연결
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

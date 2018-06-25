@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -20,9 +21,10 @@ public class SettingActivity extends AppCompatActivity {
     private TextView mIsShared;
     private TextView mAutoLogin;
     private TextView mLogOut;
-
+    private CheckBox mCheckBox;
     private Switch mAutoLoginSwitch;
     private boolean loginAutoChecked = true;
+    private boolean sharedRecord = true;
 
 
 
@@ -34,17 +36,19 @@ public class SettingActivity extends AppCompatActivity {
         //액션바 뒤로가기 버튼 추가
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //SharedPreferences : autoLogin
-        SharedPreferences autoLogin = getSharedPreferences("autoLogin", getBaseContext().MODE_PRIVATE);
+        SharedPreferences autoLogin = getSharedPreferences("autoLogin", MODE_PRIVATE);
         //SharedPreferences 읽어와서 뿌리기
 
         if(autoLogin.getAll().toString() != "{}"){
             loginAutoChecked = autoLogin.getBoolean("autoLogin",true);
             mAutoLoginSwitch = findViewById(R.id.autoLoginSwitch);
             mAutoLoginSwitch.setChecked(loginAutoChecked);
+            //
+            sharedRecord = autoLogin.getBoolean("recordShare",true);
+            mCheckBox = findViewById(R.id.checkBox);
+            mCheckBox.setChecked(sharedRecord);
         }
 
-        Log.e("::머임::", String.valueOf(loginAutoChecked));
-        Log.e("::머임??::", autoLogin.getAll().toString());
 
 
         /**
@@ -67,7 +71,28 @@ public class SettingActivity extends AppCompatActivity {
         mIsShared.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //토글
+                sharedRecord = !sharedRecord;
+                //
+                SharedPreferences autoLogin = getSharedPreferences("autoLogin", MODE_PRIVATE);
+                SharedPreferences.Editor editor = autoLogin.edit();
+                editor.putBoolean("recordShare", sharedRecord);
+                editor.commit();
+                //
+                mCheckBox.setChecked(sharedRecord);
+                //
+                if(sharedRecord){
+                    Toast.makeText(SettingActivity.this, "운동 기록을 공개합니다.", Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(SettingActivity.this, "운동 기록을 공개하지 않습니다.", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+        //쳌 박스
+        mCheckBox = findViewById(R.id.checkBox);
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setCheckBox(isChecked);
             }
         });
 
@@ -88,7 +113,9 @@ public class SettingActivity extends AppCompatActivity {
                 //
                 mAutoLoginSwitch.setChecked(loginAutoChecked);
                 //
-                Toast.makeText(SettingActivity.this, "체크상태 = " + loginAutoChecked, Toast.LENGTH_SHORT).show();
+                if(loginAutoChecked){
+                    Toast.makeText(SettingActivity.this, "자동 로그인 기능을 사용합니다.", Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(SettingActivity.this, "자동 로그인 기능을 해제합니다.", Toast.LENGTH_SHORT).show();
             }
         });
         // 스위치
@@ -112,8 +139,6 @@ public class SettingActivity extends AppCompatActivity {
                 /**
                  * SharedPreferences 내용 삭제후 초기 화면으로
                  */
-                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                startActivity(intent);
                 //
                 SharedPreferences autoLogin = getSharedPreferences("autoLogin", getBaseContext().MODE_PRIVATE);
                 SharedPreferences.Editor editor = autoLogin.edit();
@@ -128,6 +153,9 @@ public class SettingActivity extends AppCompatActivity {
                 editor.commit();
                 //
                 Toast.makeText(SettingActivity.this, "로그아웃", Toast.LENGTH_SHORT).show();
+                //
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(intent);
                 //
                 finish();
 
@@ -151,7 +179,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * 자동 로그인 세팅
      */
     private void putStringAutoLogin(boolean isChecked){
         loginAutoChecked = isChecked;
@@ -162,6 +190,26 @@ public class SettingActivity extends AppCompatActivity {
         editor.commit();
         //
         mAutoLoginSwitch.setChecked(loginAutoChecked);
-        Toast.makeText(SettingActivity.this, "체크상태 = " + loginAutoChecked, Toast.LENGTH_SHORT).show();
+        if(loginAutoChecked){
+            Toast.makeText(SettingActivity.this, "자동 로그인 기능을 사용합니다.", Toast.LENGTH_SHORT).show();
+        }else Toast.makeText(SettingActivity.this, "자동 로그인 기능을 해제합니다.", Toast.LENGTH_SHORT).show();
+
+    }
+
+    /**
+     * 기록 공유 온 오프
+     */
+    private void setCheckBox(boolean isChecked){
+        sharedRecord = isChecked;
+        //
+        SharedPreferences autoLogin = getSharedPreferences("autoLogin", MODE_PRIVATE);
+        SharedPreferences.Editor editor = autoLogin.edit();
+        editor.putBoolean("recordShare", sharedRecord);
+        editor.commit();
+        //
+        mCheckBox.setChecked(sharedRecord);
+        if(sharedRecord){
+            Toast.makeText(SettingActivity.this, "운동 기록을 공개합니다.", Toast.LENGTH_SHORT).show();
+        }else Toast.makeText(SettingActivity.this, "운동 기록을 공개하지 않습니다.", Toast.LENGTH_SHORT).show();
     }
 }

@@ -132,7 +132,7 @@ public class RankingActivity extends AppCompatActivity {
                             Log.e(":::츄라이:::", jsonObject.toString());
 
                             start_time = null;
-                            is_shared = 0;
+                            is_shared = jsonObject.getInt("is_shared");;
                             //
                             elapsed_time = jsonObject.getString("elapsed_time");
                             correction_rate = jsonObject.getString("correction_rate");

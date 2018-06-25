@@ -2,6 +2,7 @@ package com.example.tinygreen.chinningmaster.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
@@ -14,12 +15,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tinygreen.chinningmaster.R;
 import com.example.tinygreen.chinningmaster.adapter.ReplyAdapter;
 import com.example.tinygreen.chinningmaster.models.Article;
+import com.example.tinygreen.chinningmaster.models.Reply;
 import com.example.tinygreen.chinningmaster.retrofit.ApiService;
 
 import org.json.JSONArray;
@@ -28,7 +33,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,9 +47,16 @@ public class ArticleActivity extends AppCompatActivity {
     /**
      * 레트로핏 설정
      */
+    OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build();
+
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(ApiService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build();
     private ApiService apiService = retrofit.create(ApiService.class);
 
@@ -58,6 +72,10 @@ public class ArticleActivity extends AppCompatActivity {
     private TextView mTextReplyTime;
     //
     private TextView mReplyDelete;
+    private LinearLayout mMyArticleLayout;
+    //
+    private EditText mEReplyWrite;
+    private Button mReButton;
 
     /**
      * 리싸이클러 뷰 설정
@@ -73,7 +91,7 @@ public class ArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("정보 공유");
+        getSupportActionBar().setTitle("글 쓰기");
         //액션바 뒤로가기 버튼 추가
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /**
@@ -89,7 +107,16 @@ public class ArticleActivity extends AppCompatActivity {
         mTextReplyContent = findViewById(R.id.textReplyContent);
         mTextReplyTime = findViewById(R.id.textReplyTime);
         //
-        mReplyDelete = findViewById(R.id.replyDelete);
+        //mReplyDelete = findViewById(R.id.replyDelete);
+        //
+        mEReplyWrite =findViewById(R.id.eReplyWrite);
+        mReButton = findViewById(R.id.reButton);
+
+        /**
+         * TODO : 본인 게시글이면 삭제/수정 버튼 나와라
+         */
+        mMyArticleLayout = findViewById(R.id.myArticleLayout);
+        mMyArticleLayout.setVisibility(View.GONE);
 
         /**
          * 리싸이클러 뷰 세팅
@@ -125,9 +152,27 @@ public class ArticleActivity extends AppCompatActivity {
          * TODO : 서버키면 바꿔줄 것
          */
 
-        articleId += 1;
+        articleId += 3;
         addItem(articleId);
         //addItem2(articleId);
+
+        /**
+         *  덧글 입력 버튼
+         */
+        mReButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = getIntent();
+                int articleId = intent.getIntExtra("position",0);
+                /**
+                 * JSON 뿌려주기
+                 * TODO : 서버키면 바꿔줄 것
+                 */
+                articleId += 3;
+                writeReply(articleId);
+                mEReplyWrite.setText("");
+            }
+        });
 
 
     }
@@ -144,7 +189,10 @@ public class ArticleActivity extends AppCompatActivity {
         int id = item.getItemId();
         //액션바 뒤로가기 버튼 동작
         if(id == android.R.id.home){
-            onBackPressed();
+            Intent intent = new Intent(getBaseContext(), CommunityActivity.class);
+            startActivity(intent);
+            finish();
+            //onBackPressed();
             return true;
         }else if (id == R.id.action_write) {
             // TODO : 글쓰기로 바꿔라
@@ -154,6 +202,13 @@ public class ArticleActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getBaseContext(), CommunityActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -245,6 +300,7 @@ public class ArticleActivity extends AppCompatActivity {
         });
     }
 
+
     /**
      * 테스트 메소드
      */
@@ -307,5 +363,48 @@ public class ArticleActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 덧글 작성 메소드
+     *
+     */
+    private void writeReply(int articleId){
+        //setPostItem();
+        Reply reply = new Reply();
+        // null 값 초기화
+        reply.article_id = articleId;
+        reply.user_id = null;
+        reply.content = null;
+        reply.time = null;
+        //
+        reply.content = mEReplyWrite.getText().toString();
+
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        String userId = pref.getString("userName", "");
+        reply.user_id = userId;
+
+        Call<Reply> writeRrply = apiService.writeRrply(reply);
+        writeRrply.enqueue(new Callback<Reply>() {
+            @Override
+            public void onResponse(Call<Reply> call, Response<Reply> response) {
+                //POST CREATE 통신에서는 Response 발생하지 않음 인데 왜!!?
+                if (response.isSuccessful()) {
+                    Log.e("::::::Successful", String.valueOf(response.code()));
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    Log.e("::::::Error", String.valueOf(response.code()));
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onFailure(Call<Reply> call, Throwable t) {
+                //서버에서 Response가 안 옴.
+                //POST로 값 넘길때는 이거 실행됨.
+                Log.e("::::::Failure", t.toString());
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        //
+
+    }
 
 }

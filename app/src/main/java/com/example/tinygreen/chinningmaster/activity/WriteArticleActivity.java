@@ -1,5 +1,7 @@
 package com.example.tinygreen.chinningmaster.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -93,8 +95,10 @@ public class WriteArticleActivity extends AppCompatActivity {
                  * TODO : user_id 는 이전 Activityt에서 인텐트로 받아서 넣어야한다.
                  * 아니면 DB 오류뜸. 임시로 signin 박아넣은거 쓰셈.
                  */
-                article.user_id = "testtt";
-                article.article_id = 0;
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                String userId = pref.getString("userName", "");
+
+                article.user_id = userId;
                 //article.time = null; DB 자동 생성?
 
                 Call<Article> writeArticle = apiService.writeArticle(article);
@@ -104,8 +108,10 @@ public class WriteArticleActivity extends AppCompatActivity {
                         //POST CREATE 통신에서는 Response 발생하지 않음 인데 왜!!?
                         if (response.isSuccessful()) {
                             Log.e("::::::Successful", String.valueOf(response.code()));
+                            finish();
                         } else {
                             Log.e("::::::Error", String.valueOf(response.code()));
+                            finish();
                         }
                     }
                     @Override
@@ -113,10 +119,10 @@ public class WriteArticleActivity extends AppCompatActivity {
                         //서버에서 Response가 안 옴.
                         //POST로 값 넘길때는 이거 실행됨.
                         Log.e("::::::Failure", t.toString());
+                        finish();
                     }
                 });
-
-
+                //
             }
         });
 
@@ -129,6 +135,8 @@ public class WriteArticleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO : alrert dialog 하나 띄우고 내용 삭제
+                //
+                finish();
             }
         });
 
@@ -139,7 +147,10 @@ public class WriteArticleActivity extends AppCompatActivity {
         int id = item.getItemId();
         //액션바 뒤로가기 버튼 동작
         if(id == android.R.id.home){
-            onBackPressed();
+            //
+            Intent intent = new Intent(getBaseContext(), CommunityActivity.class);
+            startActivity(intent);
+            finish();
             return true;
         }
 

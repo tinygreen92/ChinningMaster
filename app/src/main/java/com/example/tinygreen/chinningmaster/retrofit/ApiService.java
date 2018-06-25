@@ -1,6 +1,7 @@
 package com.example.tinygreen.chinningmaster.retrofit;
 
 import com.example.tinygreen.chinningmaster.models.Article;
+import com.example.tinygreen.chinningmaster.models.Reply;
 import com.example.tinygreen.chinningmaster.models.User;
 
 import okhttp3.ResponseBody;
@@ -35,6 +36,9 @@ public interface ApiService {
 
     @POST("/WriteArticle")
     Call<Article> writeArticle(@Body Article article);
+
+    @POST("/Reply")
+    Call<Reply> writeRrply(@Body Reply reply);
 
     //ShowArticle?article_id=1
     @GET("/ShowArticle")
