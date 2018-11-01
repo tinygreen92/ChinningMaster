@@ -18,7 +18,7 @@ import retrofit2.http.Query;
  */
 public interface ApiService {
 
-    String BASE_URL = "http://ec2-54-168-66-66.ap-northeast-1.compute.amazonaws.com:3000";
+    String BASE_URL = "http://ec2-13-209-8-163.ap-northeast-2.compute.amazonaws.com:3000";
 
     @POST("/signin")
     Call<User> newContent(@Body User user);
@@ -38,7 +38,7 @@ public interface ApiService {
     Call<Article> writeArticle(@Body Article article);
 
     @POST("/Reply")
-    Call<Reply> writeRrply(@Body Reply reply);
+    Call<Reply> writeReply(@Body Reply reply);
 
     //ShowArticle?article_id=1
     @GET("/ShowArticle")

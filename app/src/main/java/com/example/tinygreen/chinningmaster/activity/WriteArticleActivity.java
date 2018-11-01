@@ -43,19 +43,16 @@ public class WriteArticleActivity extends AppCompatActivity {
     /**
      * 레트로핏 설정
      */
-    OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .build();
-
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(ApiService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
             .build();
-
     private ApiService apiService = retrofit.create(ApiService.class);
+
+    /**
+     * 아티클 본문
+     */
+    private Article article = new Article();
 
 
     @Override
@@ -81,11 +78,13 @@ public class WriteArticleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //setPostItem();
-                Article article = new Article();
+
                 // null 값 초기화
+                //article.article_id = 0;
                 article.title = null;
                 article.content = null;
                 article.workout_record = null;
+                article.time = null;
                 //
                 article.title = mEditArticleTitle.getText().toString();
                 article.content = mEditArticleContent.getText().toString();
@@ -96,10 +95,14 @@ public class WriteArticleActivity extends AppCompatActivity {
                  * 아니면 DB 오류뜸. 임시로 signin 박아넣은거 쓰셈.
                  */
                 SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-                String userId = pref.getString("userName", "");
+                String userId = pref.getString("userId", "");
+                String userName = pref.getString("userName", "");
 
                 article.user_id = userId;
+                article.name = userName;
                 //article.time = null; DB 자동 생성?
+
+                Log.e("유저 인포 : ", article.user_id);
 
                 Call<Article> writeArticle = apiService.writeArticle(article);
                 writeArticle.enqueue(new Callback<Article>() {
@@ -118,7 +121,7 @@ public class WriteArticleActivity extends AppCompatActivity {
                     public void onFailure(Call<Article> call, Throwable t) {
                         //서버에서 Response가 안 옴.
                         //POST로 값 넘길때는 이거 실행됨.
-                        Log.e("::::::Failure", t.toString());
+                        Log.e("::::::Failure??", t.toString());
                         finish();
                     }
                 });
@@ -163,9 +166,9 @@ public class WriteArticleActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * POST로 쏘아보내기
-     */
+//    /**
+//     * POST로 쏘아보내기
+//     */
 //    private void setPostItem() {
 //        Article article = new Article();
 //        // null 값 초기화

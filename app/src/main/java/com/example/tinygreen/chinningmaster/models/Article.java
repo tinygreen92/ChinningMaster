@@ -13,18 +13,20 @@ public class Article {
     public String title;
     public String content;
     public String workout_record;
+    public String name;
     public String time;
 
     public Article() {
         //생성자
     }
 
-    public Article(int article_id, String user_id, String title, String content, String workout_record, String time) {
+    public Article(int article_id, String user_id, String title, String content, String workout_record, String name, String time) {
         this.article_id = article_id;
         this.user_id = user_id;
         this.title = title;
         this.content = content;
         this.workout_record = workout_record;
+        this.name = name;
         this.time = time;
     }
 }

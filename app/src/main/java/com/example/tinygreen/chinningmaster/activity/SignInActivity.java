@@ -100,9 +100,22 @@ public class SignInActivity extends AppCompatActivity {
                 if(checkValidity(user_id,user_pw)){
                     //id/pw 검사랑 중복검사 true 면
                     //JSON post
-                    if(isNameCheakOk){
-                        retrofitPost(user_id,user_pw);
-                        finish();
+                    if(isNameCheakOk){ //if 중복체크 버튼을 이미 눌렀을 때
+
+                        if(
+                                mLoginId.getText().length() != 0 &&
+                                mLogin_name.getText().length() != 0 &&
+                                mPassword.getText().length() != 0 &&
+                                mPasswordConfirm.getText().length() != 0 &&
+                                mResidentNum.getText().length() != 0 &&
+                                mResidentNumTail.getText().length() != 0 &&
+                                mHeight.getText().length() != 0 &&
+                                mWeight.getText().length() != 0 ) {
+
+                            retrofitPost(user_id,user_pw);
+                            finish();
+                        }
+
                     } else NameOkDialog();
 
                 }
@@ -132,8 +145,15 @@ public class SignInActivity extends AppCompatActivity {
         mNameCheakBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isNameCheakOk = true;
-                showNameOkDialog();
+                //Log.e("::중복체크::", "되냐? " + user_name);
+                //아이디 칸 값 얻어와서 내용이 있다면~
+                if (mLogin_name.getText().toString().length() != 0){
+                    isNameCheakOk = true;
+                    //닉네임 중복 확인 다이얼로그 불러주고
+                    showNameOkDialog();
+                }
+                // 내용 비었으면 무반응
+
             }
         });
 
@@ -145,16 +165,79 @@ public class SignInActivity extends AppCompatActivity {
      */
     private boolean checkValidity(String id, String pw){
         //불린값 초기화
+        //id/pw 검사랑 중복검사 true 면
         isPass = true;
-        //아이디 + 패스워드 규칙
-        if(!Pattern.matches("^[a-zA-Z0-9]*$", id)) {
+        //
+        if(mLoginId.getText().toString().length() == 0 ){
             isPass = false;
-            Toast.makeText(this,"ID는 영문 대, 소문자와 숫자만 사용 가능합니다.",Toast.LENGTH_SHORT).show();
-        }else if(!Pattern.matches("^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~`#?!@$%^&*-]).{6,}$", pw)) {
-            isPass = false;
-            Toast.makeText(this,"PW에 6자 이상의 영문 소문자, 숫자, 특수문자(~`#?!@$%^&*)를 포함하세요.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"제품번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
+            return isPass;
         }
-//        //아이디 중복체크
+        //
+        if(mLogin_name.getText().toString().length() == 0 ){
+            isPass = false;
+            Toast.makeText(this,"닉네임을 입력해주세요.",Toast.LENGTH_SHORT).show();
+            return isPass;
+        }
+        //
+        if(mPassword.getText().toString().length() == 0 ){
+            isPass = false;
+            Toast.makeText(this,"PW를 입력해주세요.",Toast.LENGTH_SHORT).show();
+            return isPass;
+        }
+        //
+        if(mPasswordConfirm.getText().toString().length() == 0 ){
+            isPass = false;
+            Toast.makeText(this,"PW를 재입력해주세요.",Toast.LENGTH_SHORT).show();
+            return isPass;
+        }
+        //
+        if(mResidentNum.getText().toString().length() == 0 || mResidentNumTail.getText().toString().length() == 0 ){
+            isPass = false;
+            Toast.makeText(this,"주민등록번호를 입력해주세요.",Toast.LENGTH_SHORT).show();
+            return isPass;
+        }
+        //
+        if(mHeight.getText().toString().length() == 0 || mWeight.getText().toString().length() == 0){
+            isPass = false;
+            Toast.makeText(this,"키와 몸무게를 입력해주세요.",Toast.LENGTH_SHORT).show();
+            return isPass;
+        }
+        /**
+         *  각종 예외 사항
+         */
+        //if(mPassword.getText().toString() != mPasswordConfirm.getText().toString() ){
+        if(mPassword.getText().equals(mPasswordConfirm.getText()) ){
+            //txtUserName.getText().equals(txtPassword.getText())
+            Log.e("암호 :: ", mPassword.getText().toString());
+            Log.e("암호재입력 :: ", mPasswordConfirm.getText().toString());
+            //
+            isPass = false;
+            Toast.makeText(this,"PW 재입력 값이 맞지 않습니다.",Toast.LENGTH_SHORT).show();
+            return isPass;
+        }
+        //
+        if(mResidentNumTail.getText().toString().length() > 4){
+            isPass = false;
+            Toast.makeText(this,"주민등록번호 오류.",Toast.LENGTH_SHORT).show();
+            return isPass;
+        }
+
+
+
+//        //아이디 + 패스워드 규칙
+//        if(!Pattern.matches("^[a-zA-Z0-9]*$", id)) {
+//            isPass = false;
+//            Toast.makeText(this,"ID는 영문 대, 소문자와 숫자만 사용 가능합니다.",Toast.LENGTH_SHORT).show();
+//        }else if(!Pattern.matches("^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~`#?!@$%^&*-]).{6,}$", pw)) {
+//            isPass = false;
+//            Toast.makeText(this,"PW에 6자 이상의 영문 소문자, 숫자, 특수문자(~`#?!@$%^&*)를 포함하세요.",Toast.LENGTH_SHORT).show();
+//        }else if(pw.toString().length() != 0){
+//            isPass = false;
+//            Toast.makeText(this,"PW 값이 없습니다.",Toast.LENGTH_SHORT).show();
+//        }
+
+//        //아이디 중복체크 TODO : 수정할 것!!!!!!!!!!!!!!!!!!!!!
 //        if(isPass){
 //            //통과하면
 //            idDoubleCheck(id,pw);
@@ -201,20 +284,21 @@ public class SignInActivity extends AppCompatActivity {
      */
     public void onBackPressed() {
         //하나라도 내용이 있을때
-        if(
-                mLoginId.getText().length() != 0 ||
-                mLogin_name.getText().length() != 0 ||
-                mPassword.getText().length() != 0 ||
-                mPasswordConfirm.getText().length() != 0 ||
-                mResidentNum.getText().length() != 0 ||
-                mResidentNumTail.getText().length() != 0 ||
-                mHeight.getText().length() != 0 ||
-                mWeight.getText().length() != 0 ){
-            //경고창
+        if( mLoginId.getText().length() != 0 ||
+            mLogin_name.getText().length() != 0 ||
+            mPassword.getText().length() != 0 ||
+            mPasswordConfirm.getText().length() != 0 ||
+            mResidentNum.getText().length() != 0 ||
+            mResidentNumTail.getText().length() != 0 ||
+            mHeight.getText().length() != 0 ||
+            mWeight.getText().length() != 0 ){
 
+            //경고창
             showNotEmptyDialog();
+        } else {
+            finish();
         }
-        Log.e("::어쩌라구요::",String.valueOf(mLoginId.getText().length()));
+        //Log.e("::어쩌라구요::",String.valueOf(mLoginId.getText().length()));
     }
 
     /**
@@ -288,13 +372,13 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
-     * 닉네임 사용 가능
+     * 중복 확인 버튼 안 누름
      */
     private void NameOkDialog(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignInActivity.this);
         //
         alertDialog.setTitle("알림");
-        alertDialog.setMessage("중복 확인 버튼을 클릭해주세요.");
+        alertDialog.setMessage("ID 중복 확인을 해주세요.");
         // 확인 버튼 설정
         alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override

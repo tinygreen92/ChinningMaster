@@ -37,6 +37,9 @@
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.RankingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.ArticleActivity"
             android:label="@string/title_activity_article"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -49,7 +52,6 @@
         <activity
             android:name=".activity.EditUserInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.RankingActivity"></activity>
     </application>
 
 </manifest>

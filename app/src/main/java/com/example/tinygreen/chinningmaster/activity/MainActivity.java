@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /**
-         * 세팅 페이지 테스트
+         * 세팅 페이지
          */
 
         mSettingBtn = findViewById(R.id.settingImageView);
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /**
-         * 커뮤니티 버튼 누르면 레트로핏 테스트 페이지
+         * 커뮤니티 버튼
          */
         mCommunityTv = findViewById(R.id.communityTv);
         mCommunityTv.setOnClickListener(new View.OnClickListener() {
@@ -151,52 +151,52 @@ public class MainActivity extends AppCompatActivity {
             android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
-    /**
-     * TODO : 더미 데이터 지울 것
-     */
-    private void getUserName2(String userId){
-        try {
-            String result = "[\n" +
-                    "  {\n" +
-                    "    \"user_id\": \"qwer1234\",\n" +
-                    "    \"user_pw\": \"qwer1234!\",\n" +
-                    "    \"birth_date\": 930414,\n" +
-                    "    \"name\": 짱짱맨,\n" +
-                    "    \"height\": 173,\n" +
-                    "    \"weight\": 78\n" +
-                    "  }\n" +
-                    "]";
-
-            JSONArray jsonArray = new JSONArray(result);
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
-
-            String userName = jsonObject.getString("name");
-            int birth_date = jsonObject.getInt("birth_date");
-            int height = jsonObject.getInt("height");
-            int weight = jsonObject.getInt("weight");
-            //
-            SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("userName", userName);
-            editor.putInt("birth_date", birth_date);
-            editor.putInt("height", height);
-            editor.putInt("weight", weight);
-            editor.commit();
-
-            /**
-             * 상단 표시 데이터
-             */
-
-            mBMIVTv = findViewById(R.id.BMI_textView);
-            mBMIVTv.setText(bmiLogic(height,weight));
-
-            mUserHelloTv = findViewById(R.id.user_hello);
-            mUserHelloTv.setText("["+userName+"]님 환영합니다!");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+//    /**
+//     * TODO : 더미 데이터 지울 것
+//     */
+//    private void getUserName2(String userId){
+//        try {
+//            String result = "[\n" +
+//                    "  {\n" +
+//                    "    \"user_id\": \"qwer1234\",\n" +
+//                    "    \"user_pw\": \"qwer1234!\",\n" +
+//                    "    \"birth_date\": 930414,\n" +
+//                    "    \"name\": 짱짱맨,\n" +
+//                    "    \"height\": 173,\n" +
+//                    "    \"weight\": 78\n" +
+//                    "  }\n" +
+//                    "]";
+//
+//            JSONArray jsonArray = new JSONArray(result);
+//            JSONObject jsonObject = jsonArray.getJSONObject(0);
+//
+//            String userName = jsonObject.getString("name");
+//            int birth_date = jsonObject.getInt("birth_date");
+//            int height = jsonObject.getInt("height");
+//            int weight = jsonObject.getInt("weight");
+//            //
+//            SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+//            SharedPreferences.Editor editor = pref.edit();
+//            editor.putString("userName", userName);
+//            editor.putInt("birth_date", birth_date);
+//            editor.putInt("height", height);
+//            editor.putInt("weight", weight);
+//            editor.commit();
+//
+//            /**
+//             * 상단 표시 데이터
+//             */
+//
+//            mBMIVTv = findViewById(R.id.BMI_textView);
+//            mBMIVTv.setText(bmiLogic(height,weight));
+//
+//            mUserHelloTv = findViewById(R.id.user_hello);
+//            mUserHelloTv.setText("["+userName+"]님 환영합니다!");
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
     /**
      * 리스트 뿌리기
      */

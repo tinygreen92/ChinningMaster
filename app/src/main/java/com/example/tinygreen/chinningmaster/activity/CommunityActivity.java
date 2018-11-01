@@ -1,7 +1,5 @@
 package com.example.tinygreen.chinningmaster.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -33,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -163,6 +160,31 @@ public class CommunityActivity extends AppCompatActivity {
 
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener(){
 
+//            @Override
+//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+//                // 터치시 이벤트 구현
+//                View child = rv.findChildViewUnder(e.getX(), e.getY());
+//                if(child!=null&&gestureDetector.onTouchEvent(e)) {
+//
+//                    //클릭한 위치 받아옴 - 맨 위부터 0
+//                    /*
+//                    TODO : 여기 부분!!! 게시물 삭제하면 꼬여버림 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                     */
+//                    int position = rv.getChildLayoutPosition(child);
+//                    //yes/no
+//                    Toast.makeText(getApplicationContext(),position + " 번째 클릭",Toast.LENGTH_SHORT).show();
+//
+//                    Intent intent = new Intent(getBaseContext(), ArticleActivity.class);
+//                    //위치 넘겨줘서 해당 article에 reply 추가하게.
+//                    intent.putExtra("position",position);
+//                    startActivity(intent);
+//                    finish();
+//
+//                }
+//
+//                return false;
+//            }
+
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
                 // 터치시 이벤트 구현
@@ -171,11 +193,18 @@ public class CommunityActivity extends AppCompatActivity {
 
                     //클릭한 위치 받아옴 - 맨 위부터 0
                     int position = rv.getChildLayoutPosition(child);
+
                     //yes/no
                     //Toast.makeText(getApplicationContext(),position + " 번째 클릭",Toast.LENGTH_SHORT).show();
+                    //역순의 역순
+                    int trueArticleId = myDataset.get(position).article_id;
+                    Toast.makeText(getApplicationContext(), " ArticleId :: "+trueArticleId,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"::: 배열 사이즈 ::: "+myDataset.size(),Toast.LENGTH_SHORT).show();
 
+
+                    //위치 넘겨줘서 해당 article에 reply 추가하게.
                     Intent intent = new Intent(getBaseContext(), ArticleActivity.class);
-                    intent.putExtra("position",position);
+                    intent.putExtra("position",trueArticleId);
                     startActivity(intent);
                     finish();
 
@@ -219,7 +248,7 @@ public class CommunityActivity extends AppCompatActivity {
             }
         });
         /**
-         * 스피너 셀렉트리스너 구현
+         * spinner select listener 스피너 셀렉트리스너 구현
          */
         mSpinner = findViewById(R.id.searchSpinner);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -241,12 +270,13 @@ public class CommunityActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        myDataset.clear();
-        addListItem();
-    }
+//    //TODO : Resume 할때 판단 알고리즘 필요.
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        myDataset.clear();
+//        addListItem();
+//    }
 
     @Override
     public void onBackPressed() {
@@ -316,9 +346,11 @@ public class CommunityActivity extends AppCompatActivity {
                         String title;
                         String content;
                         String workout_record;
+                        String name;
                         String time;
                         //
-                        for(int i=0 ; i<jsonArray.length() ; i++ ){
+                        //for(int i=0 ; i<jsonArray.length() ; i++ ){
+                        for(int i=jsonArray.length()-1 ; i>=0 ; i-- ){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                             article_id = jsonObject.getInt("article_id");
@@ -328,12 +360,12 @@ public class CommunityActivity extends AppCompatActivity {
                             content = jsonObject.getString("content");
                             workout_record = jsonObject.getString("workout_record");
                             time = jsonObject.getString("time").substring(0,10);
-                            //time = jsonObject.getString("time");
+                            name = jsonObject.getString("name");
 
-                            Log.e("::::::jsonObject::", jsonObject.toString());
+                            //Log.e("::::::jsonObject::", jsonObject.toString());
 
                             //카드뷰 추가
-                            myDataset.add(new Article(article_id, user_id, title, content, workout_record, time));
+                            myDataset.add(new Article(article_id, user_id, title, content, workout_record, name, time));
                             //검색을 위한 데이터 복붙
                             searchDataset = new ArrayList<>();
                             searchDataset.addAll(myDataset);
@@ -373,47 +405,47 @@ public class CommunityActivity extends AppCompatActivity {
 
 
     }
-    //TODO : TEST UNIT : 서버연결할때 삭제할 것
-    private void addListItem2(){
-
-        String result;
-        result = "[{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"오늘치킨ㄱㄱ\",\"content\":\"운동한만큼먹어야될듯ㅋㅋ\"},{\"title\":\"님들저애국가다외움\",\"content\":\"동해물과백두산이마르고닳도록하느님이보우하사우리나라만세남산위에저소나무철갑을두른듯바람서리불변함은우리기상일세가을하늘공활한데높고구름없이밝은달은우리가슴일편단심일세이기상과이맘으로충성을다하여괴로우나즐거우나나라사랑하세무궁화삼천리화려강산대한사람대한으로길이보전하세\"},{\"title\":\"절대광고아니에요들어오세요\",\"content\":\"♚♚히어로즈오브더스☆톰♚♚가입시$$전원카드팩☜☜뒷면100%증정※♜월드오브워크래프트♜펫무료증정￥특정조건§§디아블로3§§★공허의유산★초상화♜오버워치♜겐지스킨￥획득기회@@@ 즉시이동http://kr.battle.net/heroes/ko/\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"}]";
-
-        try {
-            JSONArray jsonArray = new JSONArray(result);
-            //
-            int article_id;
-            String user_id;
-            String title;
-            String content;
-            String workout_record;
-            String time;
-            //
-            for(int i=0 ; i<jsonArray.length() ; i++ ) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                article_id = jsonArray.length()-i;
-                user_id = "작성자";
-                title = jsonObject.getString("title");
-                content = jsonObject.getString("content");
-                workout_record = "workout_record";
-                time = getTime();
-
-                //데이터셋 추가
-                myDataset.add(new Article(article_id, user_id, title, content, workout_record, time));
-                //검색을 위한 데이터 복붙
-                searchDataset = new ArrayList<>();
-                searchDataset.addAll(myDataset);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-
-        //새로고침
-        mAdapter.notifyDataSetChanged();
-    }
+//    //TODO : TEST UNIT : 서버연결할때 삭제할 것
+//    private void addListItem2(){
+//
+//        String result;
+//        result = "[{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"오늘치킨ㄱㄱ\",\"content\":\"운동한만큼먹어야될듯ㅋㅋ\"},{\"title\":\"님들저애국가다외움\",\"content\":\"동해물과백두산이마르고닳도록하느님이보우하사우리나라만세남산위에저소나무철갑을두른듯바람서리불변함은우리기상일세가을하늘공활한데높고구름없이밝은달은우리가슴일편단심일세이기상과이맘으로충성을다하여괴로우나즐거우나나라사랑하세무궁화삼천리화려강산대한사람대한으로길이보전하세\"},{\"title\":\"절대광고아니에요들어오세요\",\"content\":\"♚♚히어로즈오브더스☆톰♚♚가입시$$전원카드팩☜☜뒷면100%증정※♜월드오브워크래프트♜펫무료증정￥특정조건§§디아블로3§§★공허의유산★초상화♜오버워치♜겐지스킨￥획득기회@@@ 즉시이동http://kr.battle.net/heroes/ko/\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"},{\"title\":\"턱걸이10개했어요!!!\",\"content\":\"오랜만에운동했더니힘드네요..ㅠㅠㅠ\"},{\"title\":\"철봉10개하기진짜힘드네요;;;\",\"content\":\"이제꾸준하게운동해야할듯..ㅠㅠㅠ\"}]";
+//
+//        try {
+//            JSONArray jsonArray = new JSONArray(result);
+//            //
+//            int article_id;
+//            String user_id;
+//            String title;
+//            String content;
+//            String workout_record;
+//            String time;
+//            //
+//            for(int i=0 ; i<jsonArray.length() ; i++ ) {
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//
+//                article_id = jsonArray.length()-i;
+//                user_id = "작성자";
+//                title = jsonObject.getString("title");
+//                content = jsonObject.getString("content");
+//                workout_record = "workout_record";
+//                time = getTime();
+//
+//                //데이터셋 추가
+//                myDataset.add(new Article(article_id, user_id, title, content, workout_record, time));
+//                //검색을 위한 데이터 복붙
+//                searchDataset = new ArrayList<>();
+//                searchDataset.addAll(myDataset);
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//
+//        //새로고침
+//        mAdapter.notifyDataSetChanged();
+//    }
 
 //    /**
 //     * TODO : AlertDialog 사용하는 건데 사용안하고 보류
@@ -522,16 +554,16 @@ public class CommunityActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * 시간 연월일만 가져와
-     */
-    private String getTime(){
-        Long mNow = System.currentTimeMillis();
-        Date mDate = new Date(mNow);
-        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        return mFormat.format(mDate);
-    }
+//    /**
+//     * 시간 연월일만 가져와
+//     */
+//    private String getTime(){
+//        Long mNow = System.currentTimeMillis();
+//        Date mDate = new Date(mNow);
+//        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
+//
+//        return mFormat.format(mDate);
+//    }
 
 
 

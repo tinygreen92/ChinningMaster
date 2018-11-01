@@ -4,7 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -49,12 +51,17 @@ public class RankingActivity extends AppCompatActivity {
     private static ArrayList<Record> myDataset;
 
     //
-    private ImageView mImageView;
+    //private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //mImageView = findViewById(R.id.imageViewIcon);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("전체 사용자 기록");
         //액션바 뒤로가기 버튼 추가
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -87,6 +94,16 @@ public class RankingActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+
+
+    /**
+     * 상단 액션바 동작
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -123,27 +140,33 @@ public class RankingActivity extends AppCompatActivity {
                         String start_time;
                         String elapsed_time;
                         String correction_rate;
-                        int record_id;
+                        //int record_id;
                         int count;
                         int is_shared;
                         //
-                        for(int i=0 ; i<jsonArray.length() ; i++ ){
+                        //for(int i=0 ; i<jsonArray.length() ; i++ ){
+                        Log.e("jsonArray.length() :: " , Integer.toString(jsonArray.length()));
+                        for(int i=jsonArray.length()-1 ; i>=0 ; i-- ){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            Log.e(":::츄라이:::", jsonObject.toString());
+                            //Log.e(":::츄라이:::", jsonObject.toString());
 
-                            start_time = null;
+                            start_time = jsonObject.getString("start_time");
                             is_shared = jsonObject.getInt("is_shared");;
                             //
                             elapsed_time = jsonObject.getString("elapsed_time");
                             correction_rate = jsonObject.getString("correction_rate");
-                            record_id = jsonObject.getInt("record_id");
+                            //TODO : getInt 오류 뭐지?
+                            //record_id = jsonObject.getInt("record_id");
                             count = jsonObject.getInt("count");
-                            user_id = jsonObject.getString("name");
+                            user_id = jsonObject.getString("user_id");
 
                             Log.e(":::츄라이::::", jsonArray.getJSONObject(i).toString());
 
                             //카드뷰 추가
-                            myDataset.add(new Record(user_id, start_time, elapsed_time, correction_rate, record_id, count, is_shared));
+                            //myDataset.add(new Record(user_id, start_time, elapsed_time, correction_rate, record_id, count, is_shared));
+                            //TODO : is_shared 가 1일 경우에만 추가
+                            if(is_shared == 0)
+                                myDataset.add(new Record(user_id, start_time, elapsed_time, correction_rate, count, is_shared));
 
                         }
                         //새로고침
@@ -178,45 +201,63 @@ public class RankingActivity extends AppCompatActivity {
         });
     }
 
+
+//    /*
+//    이미지뷰 바꾸는 부분
+//     */
+//    private void appearImageView(String data){
+//        String tmp = data.replace("%","");
+//        Log.w("뭐냐 :: ", tmp);
+//        if(tmp.contains("test")) {
+//            tmp = "80";
+//        }
+//        int dataInt = Integer.parseInt(tmp);
+//        if(dataInt > 79){
+//            mImageView.setImageResource(R.drawable.rank_gold);
+//        }else if(dataInt > 59){
+//            mImageView.setImageResource(R.drawable.rank_silver);
+//        }else mImageView.setImageResource(R.drawable.rank_bronze);
+//    }
+
     //TODO : TEST UNIT : 서버연결할때 삭제할 것
-    private void addListItem2(){
-
-        String result;
-        result = "[{\"user_id\":\"QW4793\",\"count\":20,\"start_time\":\"2018년4월16일 15:30\",\"elapsed_time\":\"03:36\",\"correction_rate\":\"70%\",\"is_shared\":0},{\"user_id\":\"QW1123\",\"count\":20,\"start_time\":\"2018년4월16일 16:30\",\"elapsed_time\":\"07:36\",\"correction_rate\":\"45%\",\"is_shared\":0}]";
-
-        try {
-            JSONArray jsonArray = new JSONArray(result);
-            //
-            String user_id;
-            String start_time;
-            String elapsed_time;
-            String correction_rate;
-            int record_id;
-            int count;
-            int is_shared;
-            //
-            for(int i=0 ; i<jsonArray.length() ; i++ ){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                user_id = jsonObject.getString("user_id");
-                start_time = jsonObject.getString("start_time");
-                elapsed_time = jsonObject.getString("elapsed_time");
-                correction_rate = jsonObject.getString("correction_rate");
-                record_id = jsonObject.getInt("record_id");
-                count = jsonObject.getInt("count");
-                is_shared = jsonObject.getInt("is_shared");
-
-                //데이터셋 추가
-                myDataset.add(new Record(user_id, start_time, elapsed_time, correction_rate, record_id, count, is_shared));
-
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //새로고침
-        mAdapter.notifyDataSetChanged();
-    }
+//    private void addListItem2(){
+//
+//        String result;
+//        result = "[{\"user_id\":\"QW4793\",\"count\":20,\"start_time\":\"2018년4월16일 15:30\",\"elapsed_time\":\"03:36\",\"correction_rate\":\"70%\",\"is_shared\":0},{\"user_id\":\"QW1123\",\"count\":20,\"start_time\":\"2018년4월16일 16:30\",\"elapsed_time\":\"07:36\",\"correction_rate\":\"45%\",\"is_shared\":0}]";
+//
+//        try {
+//            JSONArray jsonArray = new JSONArray(result);
+//            //
+//            String user_id;
+//            String start_time;
+//            String elapsed_time;
+//            String correction_rate;
+//            int record_id;
+//            int count;
+//            int is_shared;
+//            //
+//            for(int i=0 ; i<jsonArray.length() ; i++ ){
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//
+//                user_id = jsonObject.getString("user_id");
+//                start_time = jsonObject.getString("start_time");
+//                elapsed_time = jsonObject.getString("elapsed_time");
+//                correction_rate = jsonObject.getString("correction_rate");
+//                record_id = jsonObject.getInt("record_id");
+//                count = jsonObject.getInt("count");
+//                is_shared = jsonObject.getInt("is_shared");
+//
+//                //데이터셋 추가
+//                myDataset.add(new Record(user_id, start_time, elapsed_time, correction_rate, record_id, count, is_shared));
+//
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        //새로고침
+//        mAdapter.notifyDataSetChanged();
+//    }
 
 
 }
