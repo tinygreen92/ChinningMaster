@@ -96,7 +96,9 @@ public class RankingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         super.onBackPressed();
+        finish();
     }
 
 
@@ -110,10 +112,13 @@ public class RankingActivity extends AppCompatActivity {
         //액션바 뒤로가기 버튼 동작
         if(id == android.R.id.home){
             onBackPressed();
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     /**
      * JSON 긁어오기
@@ -146,17 +151,16 @@ public class RankingActivity extends AppCompatActivity {
                         //
                         //for(int i=0 ; i<jsonArray.length() ; i++ ){
                         Log.e("jsonArray.length() :: " , Integer.toString(jsonArray.length()));
+
                         for(int i=jsonArray.length()-1 ; i>=0 ; i-- ){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             //Log.e(":::츄라이:::", jsonObject.toString());
 
                             start_time = jsonObject.getString("start_time");
-                            is_shared = jsonObject.getInt("is_shared");;
+                            is_shared = jsonObject.getInt("is_shared");
                             //
                             elapsed_time = jsonObject.getString("elapsed_time");
                             correction_rate = jsonObject.getString("correction_rate");
-                            //TODO : getInt 오류 뭐지?
-                            //record_id = jsonObject.getInt("record_id");
                             count = jsonObject.getInt("count");
                             user_id = jsonObject.getString("user_id");
 

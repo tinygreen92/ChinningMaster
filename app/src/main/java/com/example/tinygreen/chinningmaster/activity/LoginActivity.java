@@ -103,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         /**
          * 리니어 레이아웃 클릭하면 포커스 잃음
          */
@@ -156,12 +157,11 @@ public class LoginActivity extends AppCompatActivity {
         mExitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO : 시연 전 삭제 할것
                 moveTaskToBack(true);
                 finish();
                 //프로세스 킬
                 android.os.Process.killProcess(android.os.Process.myPid());
-                //그래프 조지기
+                //그래프 조지기 TODO : 삭제할것
 //                Intent intent = new Intent(getBaseContext(), MyWorkActivity.class);
 //                startActivity(intent);
 
@@ -186,15 +186,31 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+//        /**
+//         * 자동 로그인시 LoginActivity 스킵
+//         */
+//        String loginId = mIdView.getText().toString();
+//        String password = mPasswordView.getText().toString();
+//        Toast.makeText(LoginActivity.this, "자동 로그인 시도",Toast.LENGTH_SHORT).show();
+//        attemptLogin();
+//
+////        if(!loginId.equals("") && !password.equals("")){
+////            Toast.makeText(LoginActivity.this, "자동 로그인",Toast.LENGTH_SHORT).show();
+////
+////        }
+
+
+
     } // onCreate END
 
-    /**
-     * 더미 로그인
-     */
-    private void loginCheck2(String id, String pw){
-        isPass = true;
-        //Toast.makeText(LoginActivity.this, "님 환영합니다.",Toast.LENGTH_SHORT).show();
-    }
+//    /**
+//     * 더미 로그인
+//     */
+//    private void loginCheck2(String id, String pw){
+//        isPass = true;
+//        //Toast.makeText(LoginActivity.this, "님 환영합니다.",Toast.LENGTH_SHORT).show();
+//    }
 
 
     /**
@@ -413,7 +429,7 @@ public class LoginActivity extends AppCompatActivity {
 //                }
 //            }
 
-            // TODO : 여기서 True 넘겨야 로그인 된다ㅏㅏㅏ
+            // TODO : 여기서 True 넘겨야 로그인 된다
             return isPass;
             //return loginCheck(loginId,password);
         }

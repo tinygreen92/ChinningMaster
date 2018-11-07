@@ -116,7 +116,8 @@ public class CommunityActivity extends AppCompatActivity {
         //레이아웃 매니저 붙이고
         mRecyclerView.setLayoutManager(mLayoutManager);
         //데이터랑 연결
-        mAdapter = new RecyclerAdapter(myDataset, this);
+        mAdapter = new RecyclerAdapter(myDataset, this); //TODO : 리플
+        //mAdapter = new RecyclerAdapter(myDataset, this);
         mRecyclerView.setAdapter(mAdapter);
 
         /**
@@ -160,31 +161,6 @@ public class CommunityActivity extends AppCompatActivity {
 
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener(){
 
-//            @Override
-//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//                // 터치시 이벤트 구현
-//                View child = rv.findChildViewUnder(e.getX(), e.getY());
-//                if(child!=null&&gestureDetector.onTouchEvent(e)) {
-//
-//                    //클릭한 위치 받아옴 - 맨 위부터 0
-//                    /*
-//                    TODO : 여기 부분!!! 게시물 삭제하면 꼬여버림 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//                     */
-//                    int position = rv.getChildLayoutPosition(child);
-//                    //yes/no
-//                    Toast.makeText(getApplicationContext(),position + " 번째 클릭",Toast.LENGTH_SHORT).show();
-//
-//                    Intent intent = new Intent(getBaseContext(), ArticleActivity.class);
-//                    //위치 넘겨줘서 해당 article에 reply 추가하게.
-//                    intent.putExtra("position",position);
-//                    startActivity(intent);
-//                    finish();
-//
-//                }
-//
-//                return false;
-//            }
-
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
                 // 터치시 이벤트 구현
@@ -198,9 +174,8 @@ public class CommunityActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(),position + " 번째 클릭",Toast.LENGTH_SHORT).show();
                     //역순의 역순
                     int trueArticleId = myDataset.get(position).article_id;
-                    Toast.makeText(getApplicationContext(), " ArticleId :: "+trueArticleId,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), " ArticleId :: "+trueArticleId,Toast.LENGTH_SHORT).show();
                     //Toast.makeText(getApplicationContext(),"::: 배열 사이즈 ::: "+myDataset.size(),Toast.LENGTH_SHORT).show();
-
 
                     //위치 넘겨줘서 해당 article에 reply 추가하게.
                     Intent intent = new Intent(getBaseContext(), ArticleActivity.class);
@@ -305,6 +280,7 @@ public class CommunityActivity extends AppCompatActivity {
             // TODO : 글쓰기로 바꿔라
             Intent intent = new Intent(getBaseContext(), WriteArticleActivity.class);
             startActivity(intent);
+            finish();
             return true;
 
         }else if(id == R.id.action_search){
@@ -319,6 +295,7 @@ public class CommunityActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     /**
      * JSON 긁어오기
      */
@@ -332,13 +309,13 @@ public class CommunityActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Log.e("::::::Successful", "성공");
-                    Toast.makeText(getApplicationContext(),"불러오기 성공",Toast.LENGTH_SHORT).show();
+                    //Log.e("::::::Successful", "성공");
+                    //Toast.makeText(getApplicationContext(),"불러오기 성공",Toast.LENGTH_SHORT).show();
 
                     try {
                         String result = response.body().string();
                         JSONArray jsonArray = new JSONArray(result);
-                        Log.e("::::::jsonArray", jsonArray.toString());
+                        //Log.e("::::::jsonArray", jsonArray.toString());
 
                         //
                         int article_id;
@@ -362,8 +339,8 @@ public class CommunityActivity extends AppCompatActivity {
                             time = jsonObject.getString("time").substring(0,10);
                             name = jsonObject.getString("name");
 
-                            //Log.e("::::::jsonObject::", jsonObject.toString());
 
+                            //Log.e("::::::jsonObject::", jsonObject.toString());
                             //카드뷰 추가
                             myDataset.add(new Article(article_id, user_id, title, content, workout_record, name, time));
                             //검색을 위한 데이터 복붙

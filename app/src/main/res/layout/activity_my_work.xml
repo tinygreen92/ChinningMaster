@@ -7,7 +7,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="8">
+
+        <Spinner
+            android:id="@+id/WorkoutType"
+            android:entries="@array/workoutType"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_margin="5dp"
+        android:layout_gravity="center"
+        android:background="#bfbfbf" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1">
+
+
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart"
@@ -16,27 +41,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="4">
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:background="#bfbfbf" />
 
-        <Spinner
-            android:id="@+id/WorkoutRecord"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:entries="@array/workoutType"
-            android:textSize="16dp" />
-
-
-    </LinearLayout>
 
 </LinearLayout>

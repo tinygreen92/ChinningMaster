@@ -1,8 +1,11 @@
 package com.example.tinygreen.chinningmaster.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -73,6 +76,8 @@ public class ArticleActivity extends AppCompatActivity {
     //
     private EditText mEReplyWrite;
     private Button mReButton;
+    //댓글
+    private NestedScrollView mScroll;
 
     /**
      * 리싸이클러 뷰 설정
@@ -91,10 +96,7 @@ public class ArticleActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("정보 공유");
         //액션바 뒤로가기 버튼 추가
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        /**
-         * TODO : article_id 본문에도 표기하나?
-         */
-        //mTextArticleId = findViewById(R.id.textArticleId);
+
         mTextTitle = findViewById(R.id.articleTitle);
         mTextContent = findViewById(R.id.articleContent);
         mTextUserId = findViewById(R.id.articleUserId);
@@ -105,7 +107,7 @@ public class ArticleActivity extends AppCompatActivity {
         mTextReplyContent = findViewById(R.id.textReplyContent);
         mTextReplyTime = findViewById(R.id.textReplyTime);
         //
-        //mReplyDelete = findViewById(R.id.replyDelete);
+        mScroll = findViewById(R.id.myScroll);
         //
         mEReplyWrite =findViewById(R.id.eReplyWrite);
         mReButton = findViewById(R.id.reButton);
@@ -114,6 +116,7 @@ public class ArticleActivity extends AppCompatActivity {
          * TODO : 본인 게시글이면 삭제/수정 버튼 나와라
          */
         mMyArticleLayout = findViewById(R.id.myArticleLayout);
+        //GONE은 사라져서 공간도 차지 하지 않는다.
         mMyArticleLayout.setVisibility(View.GONE);
 
         /**
@@ -166,8 +169,13 @@ public class ArticleActivity extends AppCompatActivity {
                  * JSON 뿌려주기
                  * TODO : 서버키면 바꿔줄 것
                  */
-                writeReply(articleId);
-                mEReplyWrite.setText("");
+                //게시판 id 받아서 리체킹하고 POST 하기
+                reCheckReply(articleId);
+                //
+                //writeReply(articleId);
+                //
+
+
             }
         });
 
@@ -218,14 +226,11 @@ public class ArticleActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Log.e("::::::Successful", "성공");
-                    Toast.makeText(getApplicationContext(),"불러오기 성공",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"불러오기 성공",Toast.LENGTH_SHORT).show();
 
                     try {
                         String result = response.body().string();
                         JSONArray jsonArray = new JSONArray(result);
-
-                        //Log.e(":: 인덱스 0 ::", jsonArray.get(0).toString());
-                        //Log.e(":: 인덱스 1 ::", jsonArray.get(1).toString());
 
                         // 본문, 댓글 분리 -> 배열 두겹 벗기고
                         JSONArray jsonArrayContent = new JSONArray(jsonArray.get(0).toString());
@@ -274,6 +279,8 @@ public class ArticleActivity extends AppCompatActivity {
 
                             //새로고침
                             mAdapter.notifyDataSetChanged();
+                            //처리 후 하단 스크롤
+                            mScroll.fullScroll(View.FOCUS_DOWN);
                         }
 
                     } catch (IOException e) {
@@ -302,68 +309,37 @@ public class ArticleActivity extends AppCompatActivity {
         });
     }
 
-//
-//    /**
-//     * 테스트 메소드
-//     */
-//    private void addItem2(int articleId){
-//
-//        try {
-//            String result = "[[{\"article_id\":1,\"user_id\":\"QW4793\",\"title\":\"스쿼트 10개 했어요 !!!\",\"content\":\"오랜만에 운동했더니 힘드네요..ㅠㅠㅠ\",\"workout_record\":\"2018년4월16일 23개 56% 10분\"}],[{\"article_id\":1,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":2,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":3,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":4,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":1,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":2,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":3,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":4,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":1,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":2,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":3,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":4,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":1,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":2,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":3,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":4,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"},{\"article_id\":5,\"user_id\":\"QW4793\",\"content\":\"오 열심히 운동하셨네요 !!!\",\"time\":\"2018-04-15T23:00:32.000Z\"}]]";
-//            JSONArray jsonArray = new JSONArray(result);
-//
-//            Log.e(":: 인덱스 0 ::", jsonArray.get(0).toString());
-//            Log.e(":: 인덱스 1 ::", jsonArray.get(1).toString());
-//
-//            // 본문, 댓글 분리 -> 배열 두겹 벗기고
-//            JSONArray jsonArrayContent = new JSONArray(jsonArray.get(0).toString());
-//            JSONArray jsonArrayReply = new JSONArray(jsonArray.get(1).toString());
-//
-//            JSONObject jsonObject = jsonArrayContent.getJSONObject(0);
-//
-//            //mTextArticleId.setText(String.valueOf(jsonObject.getInt("article_id")));
-//            Log.e("밸류오브",String.valueOf(jsonObject.getInt("article_id")));
-//
-//            mTextTitle.setText(jsonObject.getString("title"));
-//            mTextUserId.setText(jsonObject.getString("user_id"));
-//            mTextContent.setText(jsonObject.getString("content"));
-//            mTextWorkoutRecord.setText(jsonObject.getString("workout_record"));
-//
-//            /**
-//             * TODO : 댓글 리싸이클러 뷰 구현
-//             */
-//            int article_id;
-//            String user_id;
-//            String title;
-//            String content;
-//            String workout_record;
-//            String time;
-//
-//            for(int i=0 ; i<jsonArrayReply.length() ; i++ ) {
-//                JSONObject jsonObjectReply = jsonArrayReply.getJSONObject(i);
-//
-//                user_id = jsonObjectReply.getString("user_id");
-//                content = jsonObjectReply.getString("content");
-//                time = "2018/06/04 01:22:45";
-//                //쩌리값
-//                title = null;
-//                article_id = 0;
-//                workout_record = null;
-//
-//                //
-//                myDataset.add(new Article(article_id, user_id, title, content, workout_record, time));
-//
-//            }
-//            //리플갯수 만큼 높이 늘려줌
-//            //resizeCommentList(jsonArrayReply.length());
-//            //새로고침
-//            mAdapter.notifyDataSetChanged();
-//
-//        }catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
+
+
+    /**
+     * 댓글 정말 입력???
+     */
+    private void reCheckReply(final int value){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ArticleActivity.this);
+        //
+        alertDialog.setTitle("알림");
+        alertDialog.setMessage("댓글을 등록하시겠습니까?");
+        // 확인 버튼 설정
+        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                writeReply(value);
+                dialog.dismiss();
+                mEReplyWrite.setText("");
+            }
+        });
+        alertDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+        //
+    }
+
+
 
     /**
      * 덧글 작성 메소드
@@ -401,6 +377,15 @@ public class ArticleActivity extends AppCompatActivity {
                 //POST로 값 넘길때는 이거 실행됨.
                 Log.e("::::::Failure", t.toString());
                 mAdapter.notifyDataSetChanged();
+                //
+                myDataset.clear();
+                Intent intent = getIntent();
+                int articleId = intent.getIntExtra("position",0);
+                addItem(articleId);
+                //하단 스크롤
+                mScroll.fullScroll(View.FOCUS_DOWN);
+
+
             }
         });
         //

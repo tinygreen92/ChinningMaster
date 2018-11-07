@@ -7,11 +7,8 @@
         <item >작성자</item>
     </string-array>
     <string-array name="workoutType">
-        <item >---운동기록을 선택해주세요---</item>
-        <item >2018년 6월 21일 20개 70% 1:24</item>
-        <item >2018년 6월 21일 18개 80% 0:50</item>
-        <item >2018년 6월 21일 26개 90% 2:01</item>
-        <item >2018년 6월 21일 09개 65% 0:39</item>
-        <item >2018년 6월 21일 18개 40% 1:12</item>
+        <item >횟수 순 정렬</item>
+        <item >시간 순 정렬</item>
+        <item >평균 교정율 정렬</item>
     </string-array>
 </resources>

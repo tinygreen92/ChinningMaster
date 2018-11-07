@@ -101,7 +101,7 @@ public class SignInActivity extends AppCompatActivity {
                     //id/pw 검사랑 중복검사 true 면
                     //JSON post
                     if(isNameCheakOk){ //if 중복체크 버튼을 이미 눌렀을 때
-
+                        //칸이 비어있지 않을 때
                         if(
                                 mLoginId.getText().length() != 0 &&
                                 mLogin_name.getText().length() != 0 &&
@@ -409,6 +409,10 @@ public class SignInActivity extends AppCompatActivity {
         userInfo.birth_date = Integer.parseInt(mResidentNum.getText().toString());
         userInfo.height = Integer.parseInt(mHeight.getText().toString());
         userInfo.weight = Integer.parseInt(mWeight.getText().toString());
+        //
+
+        //성별 저장해서 BMI 수치 표시에 쓸것.
+        putStringUserSex();
 
         Log.e("유저 인포", userInfo.user_id);
 
@@ -432,20 +436,16 @@ public class SignInActivity extends AppCompatActivity {
 
             }
         });
-        /**
-         * 레트로핏 통신 끝난 다음 실행할 것.
-         */
-        //성별 저장해서 BMI 수치 표시에 쓸것.
-        putStringUserSex();
+
     }
 
     /**
      * SharedPreferences 에 사용자 성별 넣기
      */
     private void putStringUserSex(){
+        String userSex = mResidentNumTail.getText().toString();
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        String userSex = mResidentNumTail.getText().toString();
         editor.putString("userSex", userSex);
         editor.commit();
     }

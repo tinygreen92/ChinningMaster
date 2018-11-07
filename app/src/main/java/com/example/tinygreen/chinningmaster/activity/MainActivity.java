@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tinygreen.chinningmaster.R;
+import com.example.tinygreen.chinningmaster.models.Record;
 import com.example.tinygreen.chinningmaster.retrofit.ApiService;
 
 import org.json.JSONArray;
@@ -67,14 +68,6 @@ public class MainActivity extends AppCompatActivity {
         //getUserName2(userId);
 
 
-//        /**
-//         * 상단 표시 데이터
-//         */
-//
-//        //mImageView = findViewById(R.id.imageView);
-//
-//        mUserHelloTv = findViewById(R.id.user_hello);
-//        mUserHelloTv.setText("["+USERNAME+"]님 환영합니다!");
 
 
         /**
@@ -100,8 +93,13 @@ public class MainActivity extends AppCompatActivity {
         mWorkoutRecordTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), MyWorkActivity.class);
-                startActivity(intent);
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                String userId = pref.getString("userId", "");
+                //유저 아이디로 레코드 테이블 조회
+                checkGetAllUserRecord(userId);
+//                Intent intent = new Intent(getBaseContext(), MyWorkActivity.class);
+//                intent.putExtra("USERID",userId);
+//                startActivity(intent);
             }
         });
 
@@ -198,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
     /**
-     * 리스트 뿌리기
+     * 유저 정보 확인
      */
     private void getUserName(String userId){
         Call<ResponseBody> enterPersonalInfo = apiService.enterPersonalInfo(userId);
@@ -253,6 +251,79 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("::::::Failure", t.getMessage());
 //                Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * getAllUserRecord 에서 기록있나 없나 판별
+     */
+    private void checkGetAllUserRecord(final String userId){
+
+        Call<ResponseBody> getAllUserRecord = apiService.getAllUserRecord();
+        getAllUserRecord.enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+
+                    try {
+                        String result = response.body().string();
+                        JSONArray jsonArray = new JSONArray(result);
+                        // JOIN 해서 얻어온 값 user_id = name
+                        String user_id;
+                        boolean isExist = false;
+                        for(int i=jsonArray.length()-1 ; i>=0 ; i-- ){
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            user_id = jsonObject.getString("user_id");
+
+                            //Log.e("::뭐임???::", user_id);
+                            /**
+                             * 유저 아이디가 전체 record에 존재하면 true 반환
+                             */
+                            if (user_id.equals(userId)){
+                                Log.e("::일치 아이디 뭐임???::", user_id);
+                                isExist = true;
+                            }
+                        }
+                        //로직
+                        if (isExist == true){
+                            /**
+                             * DB 에 운동 기록이 존재하네?
+                             */
+                            Intent intent = new Intent(getBaseContext(), MyWorkActivity.class);
+                            intent.putExtra("USERID",userId);
+                            intent.putExtra("isExist","ok"); //계획대로 되고있어
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(getBaseContext(), MyWorkActivity.class);
+                            intent.putExtra("USERID",userId);
+                            intent.putExtra("isExist","no"); //계획대로 안되고있어
+                            startActivity(intent);
+                        }
+
+                    } catch (IOException e) {
+                        Log.e(":::IOE:::", "머임??");
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        Log.e(":::JSON:::", "머임??");
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Log.e("::::::Error", "에러");
+                    Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("::::::Failure", t.toString());
+                //Log.e("::::::Failure", t.getMessage());
+                Toast.makeText(getApplicationContext(),"서버 연결 실패",Toast.LENGTH_SHORT).show();
+
             }
         });
     }

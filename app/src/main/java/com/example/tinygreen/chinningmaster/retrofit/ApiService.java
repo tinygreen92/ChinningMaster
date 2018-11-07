@@ -27,6 +27,10 @@ public interface ApiService {
     @GET("/login")
     Call<ResponseBody> checkLogin(@Query("user_id") String id, @Query("user_pw") String pw);
 
+
+    @POST("/EditPersonalInfo")
+    Call<User> editpersonalInfo(@Body User user);
+
 //    @FormUrlEncoded
 //    @POST("/EnterEditPersonalInfo")
 //    Call<ResponseBody> enterPersonalInfo(@Field("user_id") String id);
@@ -49,5 +53,8 @@ public interface ApiService {
 
     @GET("/GetAllUserRecord")
     Call<ResponseBody> getAllUserRecord();
+
+    @GET("/GetPersonalRecord")
+    Call<ResponseBody> getPersonalRecord(@Query("user_id") String id);
 
 }

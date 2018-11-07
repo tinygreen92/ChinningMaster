@@ -3,12 +3,15 @@ package com.example.tinygreen.chinningmaster.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.tinygreen.chinningmaster.R;
+import com.example.tinygreen.chinningmaster.activity.ArticleActivity;
+import com.example.tinygreen.chinningmaster.activity.CommunityActivity;
 import com.example.tinygreen.chinningmaster.models.Article;
 
 import java.util.ArrayList;
@@ -19,8 +22,16 @@ import java.util.ArrayList;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements OnListItemClickListener {
 
     private ArrayList<Article> mDataset;
+    private ArrayList reCntArray;
     private OnListItemClickListener mListener;
     private Context mContext;
+
+//    //TODO : 리플
+//    public RecyclerAdapter (ArrayList<Article> myDataset, ArrayList reCntArrayData, Context context) {
+//        mDataset = myDataset;
+//        reCntArray = reCntArrayData;
+//        mContext = context;
+//    }
 
     public RecyclerAdapter (ArrayList<Article> myDataset, Context context) {
         mDataset = myDataset;
@@ -48,6 +59,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 //        holder.mTextArticleIdView.setText(String.valueOf(mDataset.get(position).article_id));
         holder.mTextTimeView.setText(mDataset.get(position).time.toString());
         holder.mTextUserIdView.setText(mDataset.get(position).user_id.toString());
+
     }
 
     @Override
@@ -81,7 +93,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             mTextContentView = view.findViewById(R.id.textContent);
 //            mTextArticleIdView = view.findViewById(R.id.textArticleId);
             mTextTimeView = view.findViewById(R.id.textTime);
-            mTextReplyCntView = view.findViewById(R.id.textReplyCnt);
+//            mTextReplyCntView = view.findViewById(R.id.textReplyCnt);
             mTextUserIdView = view.findViewById(R.id.textUserId);
             //뷰에 리스너 연결
             view.setOnClickListener(new View.OnClickListener() {
